@@ -89,7 +89,7 @@
                     td_js_v: Trackdrive.Optimizer.version
                 };
 
-                ajax_requests[unique_key] = $.ajax({
+                ajax_requests[unique_key] = jQuery.ajax({
                     url: endpoints.numbers,
                     data: data
                 })
