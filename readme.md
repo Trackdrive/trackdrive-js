@@ -35,7 +35,7 @@ Your token can be obtained from one of your offers: https://trackdrive.net/offer
 
 ## Advanced Options
 
-#### Additional Tracking Tokens
+### Additional Tracking Tokens
 
 Additional tokens can be passed by setting the html attribute `data-tokens`
 
@@ -45,7 +45,7 @@ Additional tokens can be passed by setting the html attribute `data-tokens`
 ```
 
 
-#### Number Format
+### Number Format
 
 The format for the displayed number can be changed by setting `data-format`
 
