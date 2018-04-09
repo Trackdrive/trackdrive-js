@@ -14,7 +14,7 @@ Track visitors to your landing pages with unique telephone numbers from https://
 #### 2. Wrap your telephone number with the `.trackdrive-number` css class.
 
 ```
-<p>General Inquiries: <strong class="trackdrive-number">(855) 654 2938</strong></p>
+<span class="trackdrive-number">(855) 654 2938</span>
 ```
 
 #### 3. Call the library with your optimizer token.
@@ -35,14 +35,22 @@ Your token can be obtained from one of your offers: https://trackdrive.net/offer
 
 ## Advanced Options
 
-#### Passing Additional Tokens
+#### Additional Tracking Tokens
 
 Additional tokens can be passed by setting the html attribute `data-tokens`
 
 
 ``` html
-<strong class="trackdrive-number" data-tokens='{"interest":"loans"}'>
-  (855) 654 2938
-</strong>
+<span class="trackdrive-number" data-tokens='{"interest":"loans"}'>(855) 654 2938</span>
+```
+
+
+#### Number Format
+
+The number format that will be outputted. Either `human` or `plain`
+
+
+``` html
+<span class="trackdrive-number" data-format="plain">+18556542938</span>
 ```
 
