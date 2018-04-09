@@ -47,7 +47,7 @@ Additional tokens can be passed by setting the html attribute `data-tokens`
 
 #### Number Format
 
-The format for the displayed number. The acceptable values are:
+The format for the displayed number can be changed by setting `data-format`
 
 **plain**  +18001231234
 
