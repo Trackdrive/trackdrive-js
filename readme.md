@@ -17,7 +17,9 @@ Track visitors to your landing pages with unique telephone numbers from https://
 <p>General Inquiries: <strong class="trackdrive-number">(855) 654 2938</strong></p>
 ```
 
-3. Call the library with your optimizer token. Your token can be obtained from one of your offers: https://trackdrive.net/offers
+3. Call the library with your optimizer token.
+
+Your token can be obtained from one of your offers: https://trackdrive.net/offers
 
 ``` html
 <script>
@@ -25,6 +27,7 @@ Track visitors to your landing pages with unique telephone numbers from https://
         Trackdrive.Optimizer.replace_numbers('f47c910d0b3429902ee69290009e36a4');
     });
 </script>
+```
 
 Success! Your default telephone number will now be replaced with dynamic tracking numbers from Trackdrive.
 
