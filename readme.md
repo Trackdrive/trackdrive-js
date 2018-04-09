@@ -1,6 +1,6 @@
 # trackdrive-optimizer.js
 
-Track visitors to your landing pages with unique telephone numbers from https://trackdrive.net/.
+Track visitors to your landing pages with unique telephone numbers from https://trackdrive.net/
 
 
 ## Usage
@@ -29,6 +29,6 @@ Your token can be obtained from one of your offers: https://trackdrive.net/offer
 </script>
 ```
 
-#### Success! Your default telephone number will now be replaced with dynamic tracking numbers from Trackdrive.
+#### Success! Your default telephone number will now be replaced with dynamic tracking numbers from https://trackdrive.net/
 
 
