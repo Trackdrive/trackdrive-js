@@ -55,6 +55,7 @@ The format for the displayed number can be changed by setting `data-format`
 
 
 ``` html
+<span class="trackdrive-number" data-format="human">(800) 123-1234</span>
 <span class="trackdrive-number" data-format="plain">+18556542938</span>
 ```
 
