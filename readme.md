@@ -32,3 +32,16 @@ Your token can be obtained from one of your offers: https://trackdrive.net/offer
 #### Success! Your default telephone number will now be replaced with dynamic tracking numbers from https://trackdrive.net/
 
 
+
+## Advanced Options
+
+#### Passing Additional Tokens
+
+Additional tokens can be passed by setting the html attribute `data-tokens`
+
+For example:
+
+```
+<p>General Inquiries: <strong class="trackdrive-number" data-tokens='{"interest":"loans"}'>(855) 654 2938</strong></p>
+```
+
