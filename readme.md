@@ -49,8 +49,8 @@ Additional tokens can be passed by setting the html attribute `data-tokens`
 
 The format for the displayed number. The acceptable values are:
 
-plain 	+18001231234
-human 	(800) 123-1234
+- *plain* 	+18001231234
+- *human* 	(800) 123-1234
 
 
 ``` html
