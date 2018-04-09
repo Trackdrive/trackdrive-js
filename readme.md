@@ -13,7 +13,7 @@ Track visitors to your landing pages with unique telephone numbers from https://
 
 #### 2. Wrap your telephone number with the `.trackdrive-number` css class.
 
-```
+``` html
 <span class="trackdrive-number">(855) 654 2938</span>
 ```
 
