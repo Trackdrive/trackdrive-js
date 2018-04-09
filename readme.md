@@ -5,19 +5,19 @@ Track visitors to your landing pages with unique telephone numbers from https://
 
 ## Usage
 
-1. Include the trackdrive optimizer library on your page.
+#### 1. Include the trackdrive optimizer library on your page.
 
 ``` html
 <script src="https://trackdrive.net/assets/trackdrive-optimizer.js"></script>
 ```
 
-2. Wrap your telephone number with the `.trackdrive-number` css class.
+#### 2. Wrap your telephone number with the `.trackdrive-number` css class.
 
 ```
 <p>General Inquiries: <strong class="trackdrive-number">(855) 654 2938</strong></p>
 ```
 
-3. Call the library with your optimizer token.
+#### 3. Call the library with your optimizer token.
 
 Your token can be obtained from one of your offers: https://trackdrive.net/offers
 
@@ -29,6 +29,6 @@ Your token can be obtained from one of your offers: https://trackdrive.net/offer
 </script>
 ```
 
-Success! Your default telephone number will now be replaced with dynamic tracking numbers from Trackdrive.
+#### Success! Your default telephone number will now be replaced with dynamic tracking numbers from Trackdrive.
 
 
