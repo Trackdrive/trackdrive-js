@@ -41,11 +41,8 @@ Additional tokens can be passed by setting the html attribute `data-tokens`
 
 
 ```
-<p>
-	General Inquiries: 
-	<strong class="trackdrive-number" data-tokens='{"interest":"loans"}'>
-		(855) 654 2938
-	</strong>
-</p>
+<strong class="trackdrive-number" data-tokens='{"interest":"loans"}'>
+	(855) 654 2938
+</strong>
 ```
 
