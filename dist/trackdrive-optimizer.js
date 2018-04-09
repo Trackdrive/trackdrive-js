@@ -10497,7 +10497,7 @@ if (typeof(window.Trackdrive) === 'undefined') {
             });
         }
 
-        function request_trackdrive_number(optional_tokens, callback) {
+        function request_trackdrive_number(optional_tokens) {
             if (typeof(optional_tokens) === 'undefined') {
                 optional_tokens = {};
             }
