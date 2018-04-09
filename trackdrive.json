@@ -1,0 +1,17 @@
+{
+  "name": "trackdrive-optimizer",
+  "title": "Trackdrive Optimizer",
+  "description": "Display Trackdrive tracking telephone numbers.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/Trackdrive/trackdrive-optimizer",
+  "author": {
+    "name": "Trackdrive",
+    "url": "https://trackdrive.net/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Trackdrive/trackdrive-optimizer"
+  },
+  "bugs": "https://github.com/Trackdrive/trackdrive-optimizer/issues",
+  "keywords": ["trackdrive", "call", "tracking", "optimizer"]
+}
