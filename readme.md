@@ -1,6 +1,6 @@
-# trackdrive.js
+# trackdrive-optimizer.js
 
-Display Trackdrive tracking telephone numbers.
+Track visitors to your landing pages with unique telephone numbers from https://trackdrive.net/.
 
 
 ## Usage
@@ -11,7 +11,7 @@ Display Trackdrive tracking telephone numbers.
 <script src="https://trackdrive.net/assets/trackdrive-optimizer.js"></script>
 ```
 
-2. Wrap your telephone number with the .trackdrive-number css class.
+2. Wrap your telephone number with the `.trackdrive-number` css class.
 
 ```
 <p>General Inquiries: <strong class="trackdrive-number">(855) 654 2938</strong></p>
