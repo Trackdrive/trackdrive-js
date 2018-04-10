@@ -8,7 +8,8 @@
 
     <script>
         TrackdrivejQuery(function () {
-            Trackdrive.Optimizer.replace_numbers('your-offer-token-goes-here');
+            // Obtain your tracking token from https://trackdrive.net/offers/
+            Trackdrive.Optimizer.replace_numbers('your-offer-token');
         });
     </script>
 
@@ -19,14 +20,22 @@
     <h1>trackdrive.js</h1>
     <hr>
 
-    <!--This is your default number here and will be replaced with a pool number -->
-    <p>General Inquiries: <strong class="trackdrive-number">(855) 654 2938</strong></p>
+    <!-- This telephone number will be replaced by a Trackdrive tracking number. -->
+    <div class="trackdrive-number">(855) 654 2938</div>
+    <hr>
 
-    <p>
-        The Loan Hotline: <strong class="trackdrive-number" data-format="plain" data-tokens='{"interest":"loans"}'>(855)
-        654 2938</strong>
-    </p>
-    <p>The Hotline! <strong class="trackdrive-number" data-tokens='{"interest":"loans"}'>(855) 654 2938</strong></p>
+    <!-- replaced by a hyperlinked tracking number -->
+    <strong class="trackdrive-number" data-hyperlink="true">(855) 654 2938</strong>
+    <hr>
+
+    <a href="#whatever" class="trackdrive-number" data-hyperlink="true">(855) 654 2938</a>
+    <hr>
+
+    <!-- send additional tokens with data-tokens, and display a plain hyperlinked number -->
+    <strong class="trackdrive-number" data-format="plain" data-hyperlink="true" data-tokens='{"interest":"loans"}'>
+        (855) 654 2938
+    </strong>
+
 </div>
 
 <style>
@@ -35,7 +44,7 @@
     }
 
     hr {
-        opacity: 0.5;
+        opacity: 0.4;
     }
 
     .container {
