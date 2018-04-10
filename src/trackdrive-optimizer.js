@@ -4,7 +4,13 @@
  *
  */
 (function (context) {
+    /* Possible options:
+     *
+     *	context:        jQuery element to scope the number replacement to this context. EG: $('#container-1')
+     *
+     */
     var Optimizer = function (offer_key, options) {
+        var $ = TrackdrivejQuery;
         var self = this;
 
         if (typeof(options) === 'undefined') {
@@ -12,7 +18,7 @@
         }
 
         if (typeof(options.context) === 'undefined') {
-            options.context = jQuery('body');
+            options.context = $('body');
         }
 
         var selectors = {
@@ -39,6 +45,8 @@
                 // the .trackdrive-number DOM element
                 var $number = $(this);
 
+                $number.hide();
+
                 // Get additional optional tokens from the DOM element.
                 //
                 // For example, give the following HTML:
@@ -57,6 +65,9 @@
                 // Request the number
                 var promise = request_trackdrive_number(optional_tokens);
                 // Wait for the server to respond
+                promise.always(function () {
+                    $number.show();
+                });
                 promise.done(function (data) {
                     if (typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && typeof(data.number.human_number) !== 'undefined') {
                         // update the DOM with the number
@@ -76,7 +87,7 @@
             }
 
             var referrer_url = Trackdrive.Base64.encode(window.location.href.toString());
-            var referrer_tokens = Trackdrive.Base64.encode(jQuery.param(optional_tokens));
+            var referrer_tokens = Trackdrive.Base64.encode(TrackdrivejQuery.param(optional_tokens));
 
             var unique_key = offer_key + referrer_url + referrer_tokens;
 
@@ -89,7 +100,7 @@
                     td_js_v: Trackdrive.Optimizer.version
                 };
 
-                ajax_requests[unique_key] = jQuery.ajax({
+                ajax_requests[unique_key] = TrackdrivejQuery.ajax({
                     url: endpoints.numbers,
                     data: data
                 })

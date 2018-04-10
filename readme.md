@@ -23,7 +23,7 @@ Your token can be obtained from one of your offers: https://trackdrive.net/offer
 
 ``` html
 <script>
-    jQuery(function () {
+    TrackdrivejQuery(function () {
         Trackdrive.Optimizer.replace_numbers('f47c910d0b3429902ee69290009e36a4');
     });
 </script>

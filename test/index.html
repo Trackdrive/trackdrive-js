@@ -3,12 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>Trackdrive Test</title>
+    <title>Trackdrive Example</title>
     <script src="../dist/trackdrive-optimizer.js"></script>
 
     <script>
-        jQuery(function () {
-            Trackdrive.Optimizer.replace_numbers('f47c910d0b3429902ee69290009e36a4');
+        TrackdrivejQuery(function () {
+            Trackdrive.Optimizer.replace_numbers('your-offer-token-goes-here');
         });
     </script>
 
@@ -19,10 +19,12 @@
     <h1>trackdrive.js</h1>
     <hr>
 
+    <!--This is your default number here and will be replaced with a pool number -->
     <p>General Inquiries: <strong class="trackdrive-number">(855) 654 2938</strong></p>
 
     <p>
-        The Loan Hotline: <strong class="trackdrive-number" data-format="plain" data-tokens='{"interest":"loans"}'>(855) 654 2938</strong>
+        The Loan Hotline: <strong class="trackdrive-number" data-format="plain" data-tokens='{"interest":"loans"}'>(855)
+        654 2938</strong>
     </p>
     <p>The Hotline! <strong class="trackdrive-number" data-tokens='{"interest":"loans"}'>(855) 654 2938</strong></p>
 </div>
@@ -42,6 +44,10 @@
         padding: 40px;
         width: 800px;
         background-color: #fff;
+    }
+
+    .trackdrive-number {
+        display: none;
     }
 </style>
 
