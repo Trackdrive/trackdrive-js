@@ -35,7 +35,7 @@ Your token can be obtained from one of your offers: https://trackdrive.net/offer
 
 ## Advanced Options
 
-### Additional Tracking Tokens
+### data-tokens
 
 Additional tokens can be passed by setting the html attribute `data-tokens`
 
@@ -45,7 +45,7 @@ Additional tokens can be passed by setting the html attribute `data-tokens`
 ```
 
 
-### Number Format
+### data-format
 
 The format for the displayed number can be changed by setting `data-format`
 
@@ -57,5 +57,17 @@ The format for the displayed number can be changed by setting `data-format`
 ``` html
 <span class="trackdrive-number" data-format="human">(800) 123-1234</span>
 <span class="trackdrive-number" data-format="plain">+18556542938</span>
+```
+
+
+### data-hyperlink
+
+The resulting number can be displayed as a link by setting `data-hyperlink="true"`
+
+
+``` html
+<span class="trackdrive-number" data-hyperlink="true">
+    <a href="tel:+18001231234">(800) 123-1234</a>
+</span>
 ```
 
