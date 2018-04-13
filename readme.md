@@ -91,7 +91,7 @@ Output specific text instead of a number.
 
 input | output
 --- | ---
-`data-hyperlink="true" data-text="Click To Call"` | `<a href="tel:+18558797917">Click To Call</a>`
+`data-text="Click To Call" data-hyperlink="true"` | `<a href="tel:+18558797917">Click To Call</a>`
 `data-text="<button>Click here to call [human_number]</button>"` | `<button>Click here to call (855) 879-7917</button>`
 
 ## Javascript Options
