@@ -15,8 +15,15 @@
                 TrackdrivejQuery('#warning').show();
             }
 
+            // Callback function called after each number is drawn.
+            var done = function (data, $number) {
+                console.log(data, $number);
+            };
+
             // Obtain your tracking offer_token from https://trackdrive.net/offers/
-            Trackdrive.Optimizer.replace_numbers({offer_token: offer_token});
+            Trackdrive.Optimizer.replace_numbers({offer_token: offer_token, done: done});
+
+
         });
     </script>
 

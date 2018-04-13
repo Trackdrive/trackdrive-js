@@ -10388,6 +10388,7 @@ if (typeof(window.Trackdrive) === 'undefined') {
      *
      *  offer_token:    [String]    The 32 character offer token.
      *	context:        [jQuery]    Number replacement will be limited to the contents of this jQuery element. EG: $('#container-1')
+     *	done:           [function]  Callback function called after each number is drawn. EG: done: function($number, data){ console.log($number, data); }
      *
      *  selectors:      [Hash]      CSS selectors used by the plugin to select DOM elements.
      *  endpoints:      [Hash]      HTTP endpoints used by the plugin when making API requests.
@@ -10442,6 +10443,10 @@ if (typeof(window.Trackdrive) === 'undefined') {
                 });
                 promise.done(function (data) {
                     draw_number($number, data);
+
+                    if (typeof(options.done) === 'function') {
+                        options.done($number, data);
+                    }
                 });
                 // always show the number after 5 seconds in case something goes wrong
                 setTimeout(function () {
@@ -10491,7 +10496,6 @@ if (typeof(window.Trackdrive) === 'undefined') {
                     // replace [number] with 800 123 1234
                     for (var key in number) {
                         var value = number[key];
-                        console.log("[" + key + "]");
                         html = html.replace("[" + key + "]", value);
                     }
                 } else if (format === 'human') {

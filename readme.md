@@ -113,3 +113,14 @@ Output specific text instead of a number.
 <div class="trackdrive-number" ><a href="tel:+18558797917">Click here to call (855) 879-7917</a></div>
 ```
 
+
+## Javascript Options
+
+
+parameter | type | description
+--- | ---
+offer_token | [String] | The 32 character offer token.
+context | [jQuery] | Number replacement will be limited to the contents of this jQuery element. EG: $('#container-1')
+done | [function] | Callback function called after each number is drawn. EG: done: function($number, data){ console.log($number, data); }
+selectors | [Hash] | CSS selectors used by the plugin to select DOM elements.
+endpoints | [Hash] | HTTP endpoints used by the plugin when making API requests.
