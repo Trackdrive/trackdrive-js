@@ -35,6 +35,16 @@ Your token can be obtained from one of your offers: https://trackdrive.net/offer
 
 ## Advanced Options
 
+### data-token
+
+The offer token can be set on each individual number. This allows you to track many different offers on the same page.
+
+
+``` html
+<span class="trackdrive-number" data-token='770a968e44ef341b3611c4d67619dae8'>(855) 654 2938</span>
+```
+
+
 ### data-tokens
 
 Additional tokens can be passed by setting the html attribute `data-tokens` with JSON data.
