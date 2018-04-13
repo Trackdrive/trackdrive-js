@@ -1,4 +1,4 @@
-/*! Trackdrive Optimizer - v0.1.0 - 2018-04-13
+/*! Trackdrive Optimizer - v0.2.0 - 2018-04-13
 * https://github.com/Trackdrive/trackdrive-optimizer
 * Copyright (c) 2018 Trackdrive; Licensed  */
 /*!
@@ -10543,6 +10543,6 @@ if (typeof(window.Trackdrive) === 'undefined') {
     Optimizer.replace_numbers = function (options) {
         new Trackdrive.Optimizer(options);
     };
-    Optimizer.version = '0.1.0';
+    Optimizer.version = '0.2.0';
     context.Optimizer = Optimizer;
 })(window.Trackdrive);
