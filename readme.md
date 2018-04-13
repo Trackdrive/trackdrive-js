@@ -88,17 +88,10 @@ The resulting number can be displayed as a link by setting `data-hyperlink="true
 
 Output specific text instead of a number.
 
-*INPUT*
 
-``` html
-<span class="trackdrive-number" data-hyperlink="true" data-text="Click To Call">(855) 654 2938</span>
-```
-
-*OUTPUT*
-
-```
-<div class="trackdrive-number" ><a href="tel:+18558797917">Click To Call</a></div>
-```
+input | output
+--- | ---
+`<span class="trackdrive-number" data-hyperlink="true" data-text="Click To Call">(855) 654 2938</span>` | `<div class="trackdrive-number" ><a href="tel:+18558797917">Click To Call</a></div>`
 
 
 *INPUT*
