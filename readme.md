@@ -117,10 +117,10 @@ Output specific text instead of a number.
 ## Javascript Options
 
 
-parameter | type | description
---- | --- | ---
-offer_token | [String] | The 32 character offer token.
-context | [jQuery] | Number replacement will be limited to the contents of this jQuery element. EG: $('#container-1')
-done | [function] | Callback function called after each number is drawn. EG: done: function($number, data){ console.log($number, data); }
-selectors | [Hash] | CSS selectors used by the plugin to select DOM elements.
-endpoints | [Hash] | HTTP endpoints used by the plugin when making API requests.
+parameter | type | example | description
+--- | --- | --- | ---
+offer_token | [String] | 770a968e44ef341b3611c4d67619dae8 | The 32 character offer token.
+context | [jQuery] | $('#container') | Number replacement will be limited to the contents of this jQuery element.
+done | [function] | function($number, data){ console.log($number, data); } | Callback function called after each number is drawn.
+selectors | [Hash] | {number: '.number'} | CSS selectors used by the plugin to select DOM elements.
+endpoints | [Hash] | {numbers: 'https://custom-domain.com/api/v1/numbers.json'} | HTTP endpoints used by the plugin when making API requests.
