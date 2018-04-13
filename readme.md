@@ -116,14 +116,17 @@ Output specific text instead of a number.
 
 ## Javascript Options
 
+All the options of Trackdrive.Optimizer
 
 ``` javascript
+
 var options = {
   offer_token: offer_token,
   done: done
 };
 
 Trackdrive.Optimizer.replace_numbers(options);
+
 ```
 
 parameter | type | example | description
