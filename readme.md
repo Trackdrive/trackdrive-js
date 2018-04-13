@@ -35,7 +35,7 @@ Your token can be obtained from one of your offers: https://trackdrive.net/offer
 
 ## Advanced Options
 
-### data-token
+### data-offer-token
 
 The offer token can be set on each individual number. This allows you to track many different offers on the same page.
 
