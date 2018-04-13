@@ -37,7 +37,7 @@ Your token can be obtained from one of your offers: https://trackdrive.net/offer
 
 ### data-tokens
 
-Additional tokens can be passed by setting the html attribute `data-tokens`
+Additional tokens can be passed by setting the html attribute `data-tokens` with JSON data.
 
 
 ``` html
