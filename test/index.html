@@ -9,14 +9,14 @@
     <script>
         TrackdrivejQuery(function () {
             // Grab the token from ?token=somevalue
-            var token = TrackdrivejQuery.urlParam('token');
+            var offer_token = TrackdrivejQuery.urlParam('token');
 
-            if (typeof(token) === 'undefined' || token.length !== 32) {
+            if (offer_token === null || typeof(offer_token) === 'undefined' || offer_token.length !== 32) {
                 TrackdrivejQuery('#warning').show();
             }
 
-            // Obtain your tracking token from https://trackdrive.net/offers/
-            Trackdrive.Optimizer.replace_numbers({token: token});
+            // Obtain your tracking offer_token from https://trackdrive.net/offers/
+            Trackdrive.Optimizer.replace_numbers({offer_token: offer_token});
         });
     </script>
 
@@ -43,7 +43,8 @@
     <hr>
 
     <!-- replaced by a hyperlinked tracking number -->
-    <strong class="trackdrive-number" data-hyperlink="true">(855) 654 2938</strong>
+    <strong class="trackdrive-number" data-offer-token="ab2ba6cb212e2707be44d56da358a829" data-hyperlink="true">(855)
+        654 2938</strong>
     <hr>
 
     <a href="#whatever" class="trackdrive-number" data-hyperlink="true" data-text="Click To Call">(855) 654 2938</a>
@@ -53,6 +54,10 @@
     <strong class="trackdrive-number" data-format="plain" data-hyperlink="true" data-tokens='{"interest":"loans"}'>
         (855) 654 2938
     </strong>
+    <hr>
+
+    <div class="trackdrive-number" data-text="<a href='tel:[plain_number]'>Click here to call [human_number]</a>">(855) 654 2938</div>
+    <hr>
 
 </div>
 

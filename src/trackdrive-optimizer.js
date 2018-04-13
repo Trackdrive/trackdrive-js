@@ -6,7 +6,7 @@
 (function (context) {
     /* Possible options:
      *
-     *  token:          [String]    The 32 character offer token.
+     *  offer_token:    [String]    The 32 character offer token.
      *	context:        [jQuery]    Number replacement will be limited to the contents of this jQuery element. EG: $('#container-1')
      *
      *  selectors:      [Hash]      CSS selectors used by the plugin to select DOM elements.
@@ -31,7 +31,7 @@
 
         var selectors = options['selectors'];
         var endpoints = options['endpoints'];
-        var default_token = options['token'];
+        var default_token = options['offer_token'];
 
         function initialize() {
             replace_all();
@@ -40,9 +40,9 @@
         self.replace = function ($number) {
             // get 32 digit token
             var not_replaced = !$number.data('replaced');
-            var token = get_token($number);
+            var offer_token = get_offer_token($number);
             // onwards
-            if (token && not_replaced) {
+            if (offer_token && not_replaced) {
                 // hide the default number
                 $number.hide();
                 // Get additional optional tokens from the DOM element.
@@ -55,7 +55,7 @@
                 //
                 var optional_tokens = $number.data('tokens');
                 // Request the number
-                var promise = request_trackdrive_number(token, optional_tokens);
+                var promise = request_trackdrive_number(offer_token, optional_tokens);
                 // Wait for the server to respond
                 promise.always(function () {
                     $number.show();
@@ -78,16 +78,16 @@
             });
         }
 
-        function get_token($number) {
-            var token = $number.data('token');
+        function get_offer_token($number) {
+            var offer_token = $number.data('offerToken');
             // fallback to default token if this number does not have a token defined
-            if (typeof(token) === 'undefined') {
-                token = default_token;
+            if (offer_token === null || typeof(offer_token) === 'undefined' || offer_token.length !== 32) {
+                offer_token = default_token;
             }
-            if (typeof(token) === 'undefined' || token.length !== 32) {
-                token = false;
+            if (offer_token === null || typeof(offer_token) === 'undefined' || offer_token.length !== 32) {
+                offer_token = false;
             }
-            return token;
+            return offer_token;
         }
 
         function draw_number($number, data) {
@@ -101,19 +101,27 @@
             // ensure a valid response was returned
             if (typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && typeof(data.number.human_number) !== 'undefined') {
                 var number = data.number;
+                number.number = number.human_number;
                 // update the DOM with the number
                 var html = '';
-                if (format === 'human') {
+                // output custom text if given
+                if (text !== null && typeof(text) !== 'undefined' && text.length > 0) {
+                    html = text;
+
+                    // replace [number] with 800 123 1234
+                    for (var key in number) {
+                        var value = number[key];
+                        console.log("[" + key + "]");
+                        html = html.replace("[" + key + "]", value);
+                    }
+                } else if (format === 'human') {
                     html = number.human_number;
                 } else {
                     html = number.plain_number;
                 }
                 // wrap in link?
                 if (link) {
-                    // output custom text if given
-                    if (typeof(text) !== 'undefined' && text.length > 0) {
-                        html = text;
-                    }
+
                     if ($number.is('a')) {
                         $number.attr('href', 'tel:' + number.plain_number.toString());
                     } else {
@@ -124,7 +132,7 @@
             }
         }
 
-        function request_trackdrive_number(token, optional_tokens) {
+        function request_trackdrive_number(offer_token, optional_tokens) {
             if (typeof(optional_tokens) === 'undefined') {
                 optional_tokens = {};
             }
@@ -132,12 +140,12 @@
             var referrer_url = Trackdrive.Base64.encode(window.location.href.toString());
             var referrer_tokens = Trackdrive.Base64.encode(TrackdrivejQuery.param(optional_tokens));
 
-            var unique_key = token + referrer_url + referrer_tokens;
+            var unique_key = offer_token + referrer_url + referrer_tokens;
 
             if (typeof(Optimizer.ajax_requests[unique_key]) === 'undefined') {
                 // add POST data
                 var data = {
-                    offer_key: token,
+                    offer_key: offer_token,
                     referrer_url: referrer_url,
                     referrer_tokens: referrer_tokens,
                     td_js_v: Trackdrive.Optimizer.version

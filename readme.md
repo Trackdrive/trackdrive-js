@@ -24,7 +24,7 @@ Your token can be obtained from one of your offers: https://trackdrive.net/offer
 ``` html
 <script>
     TrackdrivejQuery(function () {
-        Trackdrive.Optimizer.replace_numbers({token: 'f47c910d0b3429902ee69290009e36a4'});
+        Trackdrive.Optimizer.replace_numbers({offer_token: 'f47c910d0b3429902ee69290009e36a4'});
     });
 </script>
 ```
@@ -41,7 +41,7 @@ The offer token can be set on each individual number. This allows you to track m
 
 
 ``` html
-<span class="trackdrive-number" data-token='770a968e44ef341b3611c4d67619dae8'>(855) 654 2938</span>
+<span class="trackdrive-number" data-offer-token='770a968e44ef341b3611c4d67619dae8'>(855) 654 2938</span>
 ```
 
 
@@ -88,9 +88,28 @@ The resulting number can be displayed as a link by setting `data-hyperlink="true
 
 Output specific text instead of a number.
 
+*INPUT*
 
 ``` html
-<span class="trackdrive-number" data-hyperlink="true" data-text="Click To Call">
-    <a href="tel:+18001231234">Click To Call</a>
-</span>
+<span class="trackdrive-number" data-hyperlink="true" data-text="Click To Call">(855) 654 2938</span>
 ```
+
+*OUTPUT*
+
+```
+<div class="trackdrive-number" ><a href="tel:+18558797917">Click To Call</a></div>
+```
+
+
+*INPUT*
+
+``` html
+<div class="trackdrive-number" data-text="<a href='tel:[plain_number]'>Click here to call [human_number]</a>">(855) 654 2938</div>
+```
+
+*OUTPUT*
+
+```
+<div class="trackdrive-number" ><a href="tel:+18558797917">Click here to call (855) 879-7917</a></div>
+```
+
