@@ -8,8 +8,15 @@
 
     <script>
         TrackdrivejQuery(function () {
+            // Grab the token from ?token=somevalue
+            var token = TrackdrivejQuery.urlParam('token');
+
+            if (typeof(token) === 'undefined' || token.length !== 32) {
+                TrackdrivejQuery('#warning').show();
+            }
+
             // Obtain your tracking token from https://trackdrive.net/offers/
-            Trackdrive.Optimizer.replace_numbers('your-offer-token');
+            Trackdrive.Optimizer.replace_numbers({token: token});
         });
     </script>
 
@@ -17,6 +24,17 @@
 <body>
 
 <div class="container">
+
+    <div id="warning" style="display: none">
+        In order for this test script to work, you must set a URL parameter with your token.
+        <br>
+        <br>
+        EG: ?token=your-token
+        <br>
+        <br>
+        Get your token from <a href="https://trackdrive.net/offers/">https://trackdrive.net/offers/</a><br>
+    </div>
+
     <h1>trackdrive.js</h1>
     <hr>
 
@@ -28,7 +46,7 @@
     <strong class="trackdrive-number" data-hyperlink="true">(855) 654 2938</strong>
     <hr>
 
-    <a href="#whatever" class="trackdrive-number" data-hyperlink="true">(855) 654 2938</a>
+    <a href="#whatever" class="trackdrive-number" data-hyperlink="true" data-text="Click To Call">(855) 654 2938</a>
     <hr>
 
     <!-- send additional tokens with data-tokens, and display a plain hyperlinked number -->
@@ -47,16 +65,25 @@
         opacity: 0.4;
     }
 
+    #warning {
+        background: #cea11d;
+        color: #fff;
+        font-size: 14px;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    #warning a {
+        font-weight: bold;
+        color: #fff;
+    }
+
     .container {
         margin: 20px auto;
         font-family: arial;
         padding: 40px;
         width: 800px;
         background-color: #fff;
-    }
-
-    .trackdrive-number {
-        display: none;
     }
 </style>
 

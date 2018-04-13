@@ -1,4 +1,4 @@
-/*! Trackdrive Optimizer - v0.1.0 - 2018-04-10
+/*! Trackdrive Optimizer - v0.1.0 - 2018-04-13
 * https://github.com/Trackdrive/trackdrive-optimizer
 * Copyright (c) 2018 Trackdrive; Licensed  */
 /*!
@@ -10194,6 +10194,16 @@
         }
     });
 
+    TrackdrivejQuery.urlParam = function (name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results === null) {
+            return null;
+        }
+        else {
+            return decodeURI(results[1]) || 0;
+        }
+    };
+
 
     TrackdrivejQuery.fn.extend({
 
@@ -10376,42 +10386,44 @@ if (typeof(window.Trackdrive) === 'undefined') {
 (function (context) {
     /* Possible options:
      *
-     *	context:        jQuery element to scope the number replacement to this context. EG: $('#container-1')
+     *  token:          [String]    The 32 character offer token.
+     *	context:        [jQuery]    Number replacement will be limited to the contents of this jQuery element. EG: $('#container-1')
+     *
+     *  selectors:      [Hash]      CSS selectors used by the plugin to select DOM elements.
+     *  endpoints:      [Hash]      HTTP endpoints used by the plugin when making API requests.
      *
      */
-    var Optimizer = function (offer_key, options) {
+    var Optimizer = function (options) {
         var $ = TrackdrivejQuery;
         var self = this;
 
-        if (typeof(options) === 'undefined') {
-            options = {}
-        }
-
-        if (typeof(options.context) === 'undefined') {
-            options.context = $('body');
-        }
-
-        var selectors = {
-            number: '.trackdrive-number'
+        var default_options = {
+            context: $('body'),
+            selectors: {
+                number: '.trackdrive-number'
+            },
+            endpoints: {
+                numbers: 'https://api.trackdrive.net/api/v1/numbers.json'
+            }
         };
 
-        var endpoints = {
-            numbers: 'https://api.trackdrive.net/api/v1/numbers.json'
+        options = TrackdrivejQuery.extend(default_options, options);
 
-        };
+        var selectors = options['selectors'];
+        var endpoints = options['endpoints'];
+        var default_token = options['token'];
 
         function initialize() {
-            if (typeof(offer_key) !== 'undefined' && offer_key.length === 32) {
-                show_trackdrive_numbers();
-            } else {
-                console.error('Trackdrive.Optimizer The offer_key you entered is not valid! Expected to receive a 32 character string.');
-            }
+            replace_all();
         }
 
-        function show_trackdrive_numbers() {
-            find('number').each(function () {
-                // the .trackdrive-number DOM element
-                var $number = $(this);
+        self.replace = function ($number) {
+            // get 32 digit token
+            var not_replaced = !$number.data('replaced');
+            var token = get_token($number);
+            // onwards
+            if (token && not_replaced) {
+                // hide the default number
                 $number.hide();
                 // Get additional optional tokens from the DOM element.
                 //
@@ -10423,7 +10435,7 @@ if (typeof(window.Trackdrive) === 'undefined') {
                 //
                 var optional_tokens = $number.data('tokens');
                 // Request the number
-                var promise = request_trackdrive_number(optional_tokens);
+                var promise = request_trackdrive_number(token, optional_tokens);
                 // Wait for the server to respond
                 promise.always(function () {
                     $number.show();
@@ -10435,16 +10447,38 @@ if (typeof(window.Trackdrive) === 'undefined') {
                 setTimeout(function () {
                     $number.show();
                 }, 5000);
+                // only replace this number once
+                $number.data('replaced', true);
+            }
+        };
+
+        function replace_all() {
+            find('number').each(function () {
+                self.replace($(this));
             });
+        }
+
+        function get_token($number) {
+            var token = $number.data('token');
+            // fallback to default token if this number does not have a token defined
+            if (typeof(token) === 'undefined') {
+                token = default_token;
+            }
+            if (typeof(token) === 'undefined' || token.length !== 32) {
+                token = false;
+            }
+            return token;
         }
 
         function draw_number($number, data) {
             var link = $number.data('hyperlink');
-            // The number format that will be outputted. Either 'human' or 'plain'
-            var format = $number.data('format');
+            var text = $number.data('text');
+            var format = $number.data('format'); // Format: human, plain
+            // default format is human
             if (typeof(format) === 'undefined') {
                 format = 'human';
             }
+            // ensure a valid response was returned
             if (typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && typeof(data.number.human_number) !== 'undefined') {
                 var number = data.number;
                 // update the DOM with the number
@@ -10454,7 +10488,12 @@ if (typeof(window.Trackdrive) === 'undefined') {
                 } else {
                     html = number.plain_number;
                 }
+                // wrap in link?
                 if (link) {
+                    // output custom text if given
+                    if (typeof(text) !== 'undefined' && text.length > 0) {
+                        html = text;
+                    }
                     if ($number.is('a')) {
                         $number.attr('href', 'tel:' + number.plain_number.toString());
                     } else {
@@ -10465,7 +10504,7 @@ if (typeof(window.Trackdrive) === 'undefined') {
             }
         }
 
-        function request_trackdrive_number(optional_tokens) {
+        function request_trackdrive_number(token, optional_tokens) {
             if (typeof(optional_tokens) === 'undefined') {
                 optional_tokens = {};
             }
@@ -10473,12 +10512,12 @@ if (typeof(window.Trackdrive) === 'undefined') {
             var referrer_url = Trackdrive.Base64.encode(window.location.href.toString());
             var referrer_tokens = Trackdrive.Base64.encode(TrackdrivejQuery.param(optional_tokens));
 
-            var unique_key = offer_key + referrer_url + referrer_tokens;
+            var unique_key = token + referrer_url + referrer_tokens;
 
             if (typeof(Optimizer.ajax_requests[unique_key]) === 'undefined') {
                 // add POST data
                 var data = {
-                    offer_key: offer_key,
+                    offer_key: token,
                     referrer_url: referrer_url,
                     referrer_tokens: referrer_tokens,
                     td_js_v: Trackdrive.Optimizer.version
@@ -10501,8 +10540,8 @@ if (typeof(window.Trackdrive) === 'undefined') {
     };
     // global ajax requests
     Optimizer.ajax_requests = {};
-    Optimizer.replace_numbers = function (offer_key, options) {
-        new Trackdrive.Optimizer(offer_key, options);
+    Optimizer.replace_numbers = function (options) {
+        new Trackdrive.Optimizer(options);
     };
     Optimizer.version = '0.1.0';
     context.Optimizer = Optimizer;

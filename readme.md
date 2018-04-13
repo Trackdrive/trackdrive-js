@@ -24,7 +24,7 @@ Your token can be obtained from one of your offers: https://trackdrive.net/offer
 ``` html
 <script>
     TrackdrivejQuery(function () {
-        Trackdrive.Optimizer.replace_numbers('f47c910d0b3429902ee69290009e36a4');
+        Trackdrive.Optimizer.replace_numbers({token: 'f47c910d0b3429902ee69290009e36a4'});
     });
 </script>
 ```
@@ -49,9 +49,10 @@ Additional tokens can be passed by setting the html attribute `data-tokens`
 
 The format for the displayed number can be changed by setting `data-format`
 
-**plain**  +18001231234
-
-**human**  (800) 123-1234
+value | example
+--- | ---
+plain | +18001231234
+human | (800) 123-1234
 
 
 ``` html
@@ -71,3 +72,15 @@ The resulting number can be displayed as a link by setting `data-hyperlink="true
 </span>
 ```
 
+
+
+### data-text
+
+Output specific text instead of a number.
+
+
+``` html
+<span class="trackdrive-number" data-hyperlink="true" data-text="Click To Call">
+    <a href="tel:+18001231234">Click To Call</a>
+</span>
+```
