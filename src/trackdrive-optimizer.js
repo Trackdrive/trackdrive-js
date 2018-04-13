@@ -163,6 +163,6 @@
     Optimizer.replace_numbers = function (options) {
         new Trackdrive.Optimizer(options);
     };
-    Optimizer.version = '0.1.0';
+    Optimizer.version = '0.2.0';
     context.Optimizer = Optimizer;
 })(window.Trackdrive);
