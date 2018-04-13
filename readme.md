@@ -91,8 +91,8 @@ Output specific text instead of a number.
 
 input | output
 --- | ---
-``` html <span class="trackdrive-number" data-hyperlink="true" data-text="Click To Call">(855) 654 2938</span>``` | `<div class="trackdrive-number" ><a href="tel:+18558797917">Click To Call</a></div>`
-`<div class="trackdrive-number" data-text="<a href='tel:[plain_number]'>Click here to call [human_number]</a>">(855) 654 2938</div>` | `<div class="trackdrive-number" ><a href="tel:+18558797917">Click here to call (855) 879-7917</a></div>`
+`data-hyperlink="true" data-text="Click To Call"` | `<a href="tel:+18558797917">Click To Call</a>`
+`data-text="<a href='tel:[plain_number]'>Click here to call [human_number]</a>"` | `<a href="tel:+18558797917">Click here to call (855) 879-7917</a>`
 
 ## Javascript Options
 
