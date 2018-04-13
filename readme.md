@@ -118,7 +118,7 @@ Output specific text instead of a number.
 
 
 parameter | type | description
---- | ---
+--- | --- | ---
 offer_token | [String] | The 32 character offer token.
 context | [jQuery] | Number replacement will be limited to the contents of this jQuery element. EG: $('#container-1')
 done | [function] | Callback function called after each number is drawn. EG: done: function($number, data){ console.log($number, data); }
