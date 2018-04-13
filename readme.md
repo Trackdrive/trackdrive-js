@@ -118,10 +118,12 @@ Output specific text instead of a number.
 
 
 ``` javascript
-Trackdrive.Optimizer.replace_numbers({
+var options = {
   offer_token: offer_token,
   done: done
-});
+};
+
+Trackdrive.Optimizer.replace_numbers(options);
 ```
 
 parameter | type | example | description
