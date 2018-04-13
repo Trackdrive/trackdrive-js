@@ -116,7 +116,7 @@ Output specific text instead of a number.
 
 ## Javascript Options
 
-All the options of Trackdrive.Optimizer
+The options available to `Trackdrive.Optimizer.replace_numbers(options)`
 
 ``` javascript
 
