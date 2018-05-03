@@ -1,4 +1,4 @@
-/*! Trackdrive Optimizer - v0.2.0 - 2018-05-03
+/*! Trackdrive Optimizer - v0.3.0 - 2018-05-03
 * https://github.com/Trackdrive/trackdrive-optimizer
 * Copyright (c) 2018 Trackdrive; Licensed  */
 /*!
