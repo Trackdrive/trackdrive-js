@@ -55,6 +55,17 @@ Additional tokens can be passed by setting the html attribute `data-tokens` with
 ```
 
 
+### data-impressions
+
+Unqiue impression tokens can be passed by setting the html attribute `data-impressions` with JSON data.
+
+
+``` html
+<span class="trackdrive-number" data-impressions='{"gclick":"fj2380fgj23098fj3290ffsf"}'>(855) 654 2938</span>
+```
+
+
+
 ### data-format
 
 The format for the displayed number can be changed by setting `data-format`

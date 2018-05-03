@@ -1,4 +1,4 @@
-/*! Trackdrive Optimizer - v0.2.0 - 2018-04-13
+/*! Trackdrive Optimizer - v0.2.0 - 2018-05-03
 * https://github.com/Trackdrive/trackdrive-optimizer
 * Copyright (c) 2018 Trackdrive; Licensed  */
 /*!
@@ -10435,8 +10435,9 @@ if (typeof(window.Trackdrive) === 'undefined') {
                 //      {"interest":"loans"}
                 //
                 var optional_tokens = $number.data('tokens');
+                var optional_impressions = $number.data('impressions');
                 // Request the number
-                var promise = request_trackdrive_number(offer_token, optional_tokens);
+                var promise = request_trackdrive_number(offer_token, optional_tokens, optional_impressions);
                 // Wait for the server to respond
                 promise.always(function () {
                     $number.show();
@@ -10466,10 +10467,10 @@ if (typeof(window.Trackdrive) === 'undefined') {
         function get_offer_token($number) {
             var offer_token = $number.data('offerToken');
             // fallback to default token if this number does not have a token defined
-            if (offer_token === null || typeof(offer_token) === 'undefined' || offer_token.length !== 32) {
+            if (offer_token === null || typeof(offer_token) === 'undefined') {
                 offer_token = default_token;
             }
-            if (offer_token === null || typeof(offer_token) === 'undefined' || offer_token.length !== 32) {
+            if (offer_token === null || typeof(offer_token) === 'undefined') {
                 offer_token = false;
             }
             return offer_token;
@@ -10516,15 +10517,19 @@ if (typeof(window.Trackdrive) === 'undefined') {
             }
         }
 
-        function request_trackdrive_number(offer_token, optional_tokens) {
+        function request_trackdrive_number(offer_token, optional_tokens, optional_impressions) {
             if (typeof(optional_tokens) === 'undefined') {
                 optional_tokens = {};
+            }
+            if (typeof(optional_impressions) === 'undefined') {
+                optional_impressions = {};
             }
 
             var referrer_url = Trackdrive.Base64.encode(window.location.href.toString());
             var referrer_tokens = Trackdrive.Base64.encode(TrackdrivejQuery.param(optional_tokens));
+            var impression_tokens = Trackdrive.Base64.encode(TrackdrivejQuery.param(optional_impressions));
 
-            var unique_key = offer_token + referrer_url + referrer_tokens;
+            var unique_key = offer_token + referrer_url + referrer_tokens + impression_tokens;
 
             if (typeof(Optimizer.ajax_requests[unique_key]) === 'undefined') {
                 // add POST data
@@ -10532,6 +10537,7 @@ if (typeof(window.Trackdrive) === 'undefined') {
                     offer_key: offer_token,
                     referrer_url: referrer_url,
                     referrer_tokens: referrer_tokens,
+                    impression_tokens: impression_tokens,
                     td_js_v: Trackdrive.Optimizer.version
                 };
 
@@ -10555,6 +10561,6 @@ if (typeof(window.Trackdrive) === 'undefined') {
     Optimizer.replace_numbers = function (options) {
         new Trackdrive.Optimizer(options);
     };
-    Optimizer.version = '0.2.0';
+    Optimizer.version = '0.3.0';
     context.Optimizer = Optimizer;
 })(window.Trackdrive);

@@ -21,8 +21,13 @@
             };
 
             // Obtain your tracking offer_token from https://trackdrive.net/offers/
-            Trackdrive.Optimizer.replace_numbers({offer_token: offer_token, done: done});
-
+            Trackdrive.Optimizer.replace_numbers({
+                offer_token: offer_token, 
+                done: done,
+                endpoints: {
+                   numbers: 'http://trackdrive.localhost/api/v1/numbers.json'
+                }
+            });
 
         });
     </script>
@@ -58,7 +63,7 @@
     <hr>
 
     <!-- send additional tokens with data-tokens, and display a plain hyperlinked number -->
-    <strong class="trackdrive-number" data-format="plain" data-hyperlink="true" data-tokens='{"interest":"loans"}'>
+    <strong class="trackdrive-number" data-format="plain" data-hyperlink="true">
         (855) 654 2938
     </strong>
     <hr>
