@@ -129,7 +129,9 @@ selectors | Hash | {number: '.number'} | CSS selectors used by the plugin to sel
 endpoints | Hash | {numbers: 'https://custom-domain.com/api/v1/numbers.json'} | HTTP endpoints used by the plugin when making API requests.
 
 
-## Requesting A Number Directly
+## Trackdrive.Optimizer#request_number
+
+Request a number getting back JSON, using the optimizer javascript api.
 
 ``` javascript
 
