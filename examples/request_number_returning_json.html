@@ -10,25 +10,42 @@
         TrackdrivejQuery(function () {
             // Grab the token from ?token=somevalue
             var offer_token = TrackdrivejQuery.urlParam('token');
-
             if (offer_token === null || typeof(offer_token) === 'undefined' || offer_token.length !== 32) {
                 TrackdrivejQuery('#warning').show();
             }
 
-            // Callback function called after each number is drawn.
-            var done = function (data, $number) {
-                console.log(data, $number);
+            // requesting a number returning JSON
+            var api = new Trackdrive.Optimizer();
+
+            // optional tokens that will be tracked by your numbers
+            // these values are tracked in addition to whatever url params you have defined on your offer.
+            var optional_tokens = {
+              s1: 'kittens'
             };
 
-            // Obtain your tracking offer_token from https://trackdrive.net/offers/
-            Trackdrive.Optimizer.replace_numbers({
-                offer_token: offer_token, 
-                done: done,
-                endpoints: {
-                   numbers: 'http://trackdrive.localhost/api/v1/numbers.json'
+            // optional unique impression tokens
+            // these values are tracked in addition to whatever impression params you have defined on your offer.
+            var optional_impressions = {
+                gclick: 'vn38290fjn2308f9j2390fj2390f23'
+            }
+
+            // get back a promise
+            var promise = api.request_number(offer_token, optional_tokens, optional_impressions);
+
+            // once the trackdrive api responds, this promise will fire
+            promise.done(function(data){
+                // log the response to the console
+                console.log(data);
+                
+                // append the response to the container
+                var html = "<h3><strong>API Response:</strong></h3><div class='code'>" + JSON.stringify(data) + "</div>";
+                TrackdrivejQuery('.container').append(html);
+
+                // append each number key and value
+                for (var key in data['number']){
+                    TrackdrivejQuery('.container').append("<p><strong>" + key + ":</strong>" + data['number'][key] + "</p>");
                 }
             });
-
         });
     </script>
 
@@ -48,27 +65,6 @@
     </div>
 
     <h1>trackdrive.js</h1>
-    <hr>
-
-    <!-- This telephone number will be replaced by a Trackdrive tracking number. -->
-    <div class="trackdrive-number">(855) 654 2938</div>
-    <hr>
-
-    <!-- replaced by a hyperlinked tracking number -->
-    <strong class="trackdrive-number" data-offer-token="ab2ba6cb212e2707be44d56da358a829" data-hyperlink="true">(855)
-        654 2938</strong>
-    <hr>
-
-    <a href="#whatever" class="trackdrive-number" data-hyperlink="true" data-text="Click To Call">(855) 654 2938</a>
-    <hr>
-
-    <!-- send additional tokens with data-tokens, and display a plain hyperlinked number -->
-    <strong class="trackdrive-number" data-format="plain" data-hyperlink="true">
-        (855) 654 2938
-    </strong>
-    <hr>
-
-    <div class="trackdrive-number" data-text="<a href='tel:[plain_number]'>Click here to call [human_number]</a>">(855) 654 2938</div>
     <hr>
 
 </div>
@@ -101,6 +97,13 @@
         padding: 40px;
         width: 800px;
         background-color: #fff;
+    }
+
+    .code{
+        font-size: 13px;
+        padding: 10px;
+        background: #f2f2f2;
+        line-height: 24px;
     }
 </style>
 

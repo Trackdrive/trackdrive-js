@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Trackdrive Example</title>
+    <script src="../dist/trackdrive-optimizer.js"></script>
+
+    <script>
+        TrackdrivejQuery(function () {
+            // Grab the token from ?token=somevalue
+            var offer_token = TrackdrivejQuery.urlParam('token');
+
+            if (offer_token === null || typeof(offer_token) === 'undefined' || offer_token.length !== 32) {
+                TrackdrivejQuery('#warning').show();
+            }
+
+            // Callback function called after each number is drawn.
+            var done = function (data, $number) {
+                console.log(data, $number);
+            };
+
+            // Obtain your tracking offer_token from https://trackdrive.net/offers/
+            Trackdrive.Optimizer.replace_numbers({
+                offer_token: offer_token, 
+                done: done
+            });
+        });
+    </script>
+
+</head>
+<body>
+
+<div class="container">
+
+    <div id="warning" style="display: none">
+        In order for this test script to work, you must set a URL parameter with your token.
+        <br>
+        <br>
+        EG: ?token=your-token
+        <br>
+        <br>
+        Get your token from <a href="https://trackdrive.net/offers/">https://trackdrive.net/offers/</a><br>
+    </div>
+
+    <h1>trackdrive.js</h1>
+    <hr>
+
+    <!-- This telephone number will be replaced by a Trackdrive tracking number. -->
+    <div class="trackdrive-number">(855) 654 2938</div>
+    <hr>
+
+    <!-- replaced by a hyperlinked tracking number -->
+    <strong class="trackdrive-number" data-offer-token="ab2ba6cb212e2707be44d56da358a829" data-hyperlink="true">(855)
+        654 2938</strong>
+    <hr>
+
+    <a href="#whatever" class="trackdrive-number" data-hyperlink="true" data-text="Click To Call">(855) 654 2938</a>
+    <hr>
+
+    <!-- send additional tokens with data-tokens, and display a plain hyperlinked number -->
+    <strong class="trackdrive-number" data-format="plain" data-hyperlink="true">
+        (855) 654 2938
+    </strong>
+    <hr>
+
+    <div class="trackdrive-number" data-text="<a href='tel:[plain_number]'>Click here to call [human_number]</a>">(855) 654 2938</div>
+    <hr>
+
+</div>
+
+<style>
+    body {
+        background-color: #f2f2f2;
+    }
+
+    hr {
+        opacity: 0.4;
+    }
+
+    #warning {
+        background: #cea11d;
+        color: #fff;
+        font-size: 14px;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    #warning a {
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .container {
+        margin: 20px auto;
+        font-family: arial;
+        padding: 40px;
+        width: 800px;
+        background-color: #fff;
+    }
+</style>
+
+</body>
+</html>

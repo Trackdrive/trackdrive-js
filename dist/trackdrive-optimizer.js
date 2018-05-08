@@ -1,4 +1,4 @@
-/*! Trackdrive Optimizer - v0.3.0 - 2018-05-03
+/*! Trackdrive Optimizer - v0.3.1 - 2018-05-08
 * https://github.com/Trackdrive/trackdrive-optimizer
 * Copyright (c) 2018 Trackdrive; Licensed  */
 /*!
@@ -10418,6 +10418,11 @@ if (typeof(window.Trackdrive) === 'undefined') {
             replace_all();
         }
 
+        self.request_number = function(offer_token, optional_tokens, optional_impressions) {
+            var promise = request_trackdrive_number(offer_token, optional_tokens, optional_impressions);
+            return promise;
+        };
+
         self.replace = function ($number) {
             // get 32 digit token
             var not_replaced = !$number.data('replaced');
@@ -10561,6 +10566,6 @@ if (typeof(window.Trackdrive) === 'undefined') {
     Optimizer.replace_numbers = function (options) {
         new Trackdrive.Optimizer(options);
     };
-    Optimizer.version = '0.3.0';
+    Optimizer.version = '0.3.1';
     context.Optimizer = Optimizer;
 })(window.Trackdrive);

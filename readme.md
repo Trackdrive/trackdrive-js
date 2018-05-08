@@ -127,3 +127,34 @@ context | jQuery | $('#container') | Number replacement will be limited to the c
 done | function | function($number, data){ console.log($number, data); } | Callback function called after each number is drawn.
 selectors | Hash | {number: '.number'} | CSS selectors used by the plugin to select DOM elements.
 endpoints | Hash | {numbers: 'https://custom-domain.com/api/v1/numbers.json'} | HTTP endpoints used by the plugin when making API requests.
+
+
+## Requesting A Number Directly
+
+``` javascript
+
+// requesting a number returning JSON
+var api = new Trackdrive.Optimizer();
+
+// optional tokens that will be tracked by your numbers
+// these values are tracked in addition to whatever url params you have defined on your offer.
+var optional_tokens = {
+  s1: 'kittens'
+};
+
+// optional unique impression tokens
+// these values are tracked in addition to whatever impression params you have defined on your offer.
+var optional_impressions = {
+    gclick: 'vn38290fjn2308f9j2390fj2390f23'
+}
+
+// get back a promise
+var promise = api.request_number(offer_token, optional_tokens, optional_impressions);
+
+// once the trackdrive api responds, this promise will fire
+promise.done(function(data){
+    // log the response to the console
+    console.log(data);
+});
+
+```
