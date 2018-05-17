@@ -155,8 +155,16 @@ var promise = api.request_number(offer_token, optional_tokens, optional_impressi
 
 // once the trackdrive api responds, this promise will fire
 promise.done(function(data){
-    // log the response to the console
-    console.log(data);
+
+  // assign the human number to a variable. EG: "(866) 230-0823"
+  var human_number = data.number.human_number;
+
+  // assign the plain number to a variable. EG: "+18662300823"
+  var plain_number = data.number.plain_number;
+
+  // Write the number to the page into a element with the class trackdrive-custom-number
+  TrackdrivejQuery('.trackdrive-custom-number').html(number);
+
 });
 
 ```
