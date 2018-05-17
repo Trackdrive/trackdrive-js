@@ -164,5 +164,13 @@ promise.done(function(data){
 ## Example Data Response
 
 ``` json
-{"number":{"id":11270,"plain_number":"+18662222644","extension":null,"checksum":"e86aa058616b3b94157c4d5ac304c880","human_number":"(866) 222-2644"}}
+{
+  "number": {
+    "id": 11270,
+    "plain_number": "+18662222644",
+    "extension": null,
+    "checksum": "e86aa058616b3b94157c4d5ac304c880",
+    "human_number": "(866) 222-2644"
+  }
+}
 ```
