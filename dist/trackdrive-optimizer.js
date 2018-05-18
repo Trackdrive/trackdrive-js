@@ -1,4 +1,4 @@
-/*! Trackdrive Optimizer - v0.3.2 - 2018-05-17
+/*! Trackdrive Optimizer - v0.3.2 - 2018-05-18
 * https://github.com/Trackdrive/trackdrive-optimizer
 * Copyright (c) 2018 Trackdrive; Licensed  */
 (typeof Crypto=="undefined"||!Crypto.util)&&function(){var m=window.Crypto={},o=m.util={rotl:function(h,g){return h<<g|h>>>32-g},rotr:function(h,g){return h<<32-g|h>>>g},endian:function(h){if(h.constructor==Number)return o.rotl(h,8)&16711935|o.rotl(h,24)&4278255360;for(var g=0;g<h.length;g++)h[g]=o.endian(h[g]);return h},randomBytes:function(h){for(var g=[];h>0;h--)g.push(Math.floor(Math.random()*256));return g},bytesToWords:function(h){for(var g=[],i=0,a=0;i<h.length;i++,a+=8)g[a>>>5]|=(h[i]&255)<<
