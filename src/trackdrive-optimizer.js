@@ -20,6 +20,8 @@
 
         var default_options = {
             context: $('body'),
+            cookies: true, // whether to store numbers in cookies
+            cookies_expires: 1, // numbers stored in cookies expire after 1 hour
             selectors: {
                 number: '.trackdrive-number'
             },
@@ -143,6 +145,8 @@
         }
 
         function request_trackdrive_number(offer_token, optional_tokens, optional_impressions) {
+            var output;
+
             if (typeof(optional_tokens) === 'undefined') {
                 optional_tokens = {};
             }
@@ -155,24 +159,63 @@
             var impression_tokens = Trackdrive.Base64.encode(TrackdrivejQuery.param(optional_impressions));
 
             var unique_key = offer_token + referrer_url + referrer_tokens + impression_tokens;
-
-            if (typeof(Optimizer.ajax_requests[unique_key]) === 'undefined') {
-                // add POST data
-                var data = {
-                    offer_key: offer_token,
-                    referrer_url: referrer_url,
-                    referrer_tokens: referrer_tokens,
-                    impression_tokens: impression_tokens,
-                    td_js_v: Trackdrive.Optimizer.version
-                };
-
-                Optimizer.ajax_requests[unique_key] = TrackdrivejQuery.ajax({
-                    url: endpoints.numbers,
-                    data: data
-                })
+            // if cookies are enabled, try to get a matching number from the visitor's cookies
+            if (options.cookies){
+                output = get_local_trackdrive_number(unique_key);
             }
+            // fallback to making a server request
+            if (typeof(output) === 'undefined' || output === false){
+                if (typeof(Optimizer.ajax_requests[unique_key]) === 'undefined') {
+                    // add POST data
+                    var data = {
+                        offer_key: offer_token,
+                        referrer_url: referrer_url,
+                        referrer_tokens: referrer_tokens,
+                        impression_tokens: impression_tokens,
+                        td_js_v: Trackdrive.Optimizer.version
+                    };
 
-            return Optimizer.ajax_requests[unique_key];
+                    Optimizer.ajax_requests[unique_key] = TrackdrivejQuery.ajax({
+                        url: endpoints.numbers,
+                        data: data
+                    });
+
+                    // write the data to a cookie
+                    Optimizer.ajax_requests[unique_key].done(function(data) {
+                        set_local_trackdrive_number(unique_key, data);
+                    });
+
+                }
+                output = Optimizer.ajax_requests[unique_key];
+            }
+            return output;
+        }
+
+        function get_local_trackdrive_number(unique_key) {
+            var unique_key_md5 = Crypto.MD5(unique_key);
+            var raw_data = Cookies.get(unique_key_md5);
+            var output = false;
+            if (typeof(raw_data) !== 'undefined'){
+                var data = $.parseJSON(raw_data);
+                // ensure the data is valid
+                if (data !== null && typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && typeof(data.number.human_number) !== 'undefined') {
+                    var dfd = $.Deferred();
+                    // resolve the promise in 10ms
+                    setTimeout(function() {
+                        dfd.resolve(data);
+                    }, 10);
+                    // return the promise that exposes done
+                    output = dfd.promise();
+                }
+            } 
+            return output;
+        }
+
+        function set_local_trackdrive_number(unique_key, data) {
+            var unique_key_md5 = Crypto.MD5(unique_key);
+            var json_data = $.toJSON(data);
+            // write the cookie
+            Cookies.set(unique_key_md5, json_data, {expires: options.cookies_expires});
         }
 
         function find(key) {
@@ -186,6 +229,6 @@
     Optimizer.replace_numbers = function (options) {
         new Trackdrive.Optimizer(options);
     };
-    Optimizer.version = '0.3.1';
+    Optimizer.version = '0.3.2';
     context.Optimizer = Optimizer;
 })(window.Trackdrive);

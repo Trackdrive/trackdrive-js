@@ -105,7 +105,7 @@ input | output
 `data-text="Click To Call" data-hyperlink="true"` | `<a href="tel:+18558797917">Click To Call</a>`
 `data-text="<button>Click here to call [human_number]</button>"` | `<button>Click here to call (855) 879-7917</button>`
 
-## Javascript Options
+## Trackdrive.Optimizer Options
 
 The options available to `Trackdrive.Optimizer.replace_numbers(options)`
 
@@ -124,6 +124,8 @@ parameter | type | example | description
 --- | --- | --- | ---
 offer_token | String | '770a968e44ef341b3611c4d67619dae8' | The 32 character offer token.
 context | jQuery | $('#container') | Number replacement will be limited to the contents of this jQuery element.
+cookies | Boolean | false | Enabled by default. Enable/disable storing retrieved numbers in visitor's cookies.
+cookies_expires | Integer | 1 | The number of days number cookies will persist before expiring. Default: 1
 done | function | function($number, data){ console.log($number, data); } | Callback function called after each number is drawn.
 selectors | Hash | {number: '.number'} | CSS selectors used by the plugin to select DOM elements.
 endpoints | Hash | {numbers: 'https://custom-domain.com/api/v1/numbers.json'} | HTTP endpoints used by the plugin when making API requests.

@@ -1,6 +1,184 @@
-/*! Trackdrive Optimizer - v0.3.1 - 2018-05-08
+/*! Trackdrive Optimizer - v0.3.2 - 2018-05-17
 * https://github.com/Trackdrive/trackdrive-optimizer
 * Copyright (c) 2018 Trackdrive; Licensed  */
+(typeof Crypto=="undefined"||!Crypto.util)&&function(){var m=window.Crypto={},o=m.util={rotl:function(h,g){return h<<g|h>>>32-g},rotr:function(h,g){return h<<32-g|h>>>g},endian:function(h){if(h.constructor==Number)return o.rotl(h,8)&16711935|o.rotl(h,24)&4278255360;for(var g=0;g<h.length;g++)h[g]=o.endian(h[g]);return h},randomBytes:function(h){for(var g=[];h>0;h--)g.push(Math.floor(Math.random()*256));return g},bytesToWords:function(h){for(var g=[],i=0,a=0;i<h.length;i++,a+=8)g[a>>>5]|=(h[i]&255)<<
+24-a%32;return g},wordsToBytes:function(h){for(var g=[],i=0;i<h.length*32;i+=8)g.push(h[i>>>5]>>>24-i%32&255);return g},bytesToHex:function(h){for(var g=[],i=0;i<h.length;i++)g.push((h[i]>>>4).toString(16)),g.push((h[i]&15).toString(16));return g.join("")},hexToBytes:function(h){for(var g=[],i=0;i<h.length;i+=2)g.push(parseInt(h.substr(i,2),16));return g},bytesToBase64:function(h){if(typeof btoa=="function")return btoa(n.bytesToString(h));for(var g=[],i=0;i<h.length;i+=3)for(var a=h[i]<<16|h[i+1]<<
+8|h[i+2],b=0;b<4;b++)i*8+b*6<=h.length*8?g.push("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(a>>>6*(3-b)&63)):g.push("=");return g.join("")},base64ToBytes:function(h){if(typeof atob=="function")return n.stringToBytes(atob(h));for(var h=h.replace(/[^A-Z0-9+\/]/ig,""),g=[],i=0,a=0;i<h.length;a=++i%4)a!=0&&g.push(("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".indexOf(h.charAt(i-1))&Math.pow(2,-2*a+8)-1)<<a*2|"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".indexOf(h.charAt(i))>>>
+6-a*2);return g}},m=m.charenc={};m.UTF8={stringToBytes:function(h){return n.stringToBytes(unescape(encodeURIComponent(h)))},bytesToString:function(h){return decodeURIComponent(escape(n.bytesToString(h)))}};var n=m.Binary={stringToBytes:function(h){for(var g=[],i=0;i<h.length;i++)g.push(h.charCodeAt(i)&255);return g},bytesToString:function(h){for(var g=[],i=0;i<h.length;i++)g.push(String.fromCharCode(h[i]));return g.join("")}}}();
+(function(){var m=Crypto,o=m.util,n=m.charenc,h=n.UTF8,g=n.Binary,i=m.MD5=function(a,b){var h=o.wordsToBytes(i._md5(a));return b&&b.asBytes?h:b&&b.asString?g.bytesToString(h):o.bytesToHex(h)};i._md5=function(a){a.constructor==String&&(a=h.stringToBytes(a));for(var b=o.bytesToWords(a),g=a.length*8,a=1732584193,d=-271733879,e=-1732584194,c=271733878,f=0;f<b.length;f++)b[f]=(b[f]<<8|b[f]>>>24)&16711935|(b[f]<<24|b[f]>>>8)&4278255360;b[g>>>5]|=128<<g%32;b[(g+64>>>9<<4)+14]=g;for(var g=i._ff,j=i._gg,k=
+i._hh,l=i._ii,f=0;f<b.length;f+=16)var m=a,n=d,p=e,q=c,a=g(a,d,e,c,b[f+0],7,-680876936),c=g(c,a,d,e,b[f+1],12,-389564586),e=g(e,c,a,d,b[f+2],17,606105819),d=g(d,e,c,a,b[f+3],22,-1044525330),a=g(a,d,e,c,b[f+4],7,-176418897),c=g(c,a,d,e,b[f+5],12,1200080426),e=g(e,c,a,d,b[f+6],17,-1473231341),d=g(d,e,c,a,b[f+7],22,-45705983),a=g(a,d,e,c,b[f+8],7,1770035416),c=g(c,a,d,e,b[f+9],12,-1958414417),e=g(e,c,a,d,b[f+10],17,-42063),d=g(d,e,c,a,b[f+11],22,-1990404162),a=g(a,d,e,c,b[f+12],7,1804603682),c=g(c,a,
+d,e,b[f+13],12,-40341101),e=g(e,c,a,d,b[f+14],17,-1502002290),d=g(d,e,c,a,b[f+15],22,1236535329),a=j(a,d,e,c,b[f+1],5,-165796510),c=j(c,a,d,e,b[f+6],9,-1069501632),e=j(e,c,a,d,b[f+11],14,643717713),d=j(d,e,c,a,b[f+0],20,-373897302),a=j(a,d,e,c,b[f+5],5,-701558691),c=j(c,a,d,e,b[f+10],9,38016083),e=j(e,c,a,d,b[f+15],14,-660478335),d=j(d,e,c,a,b[f+4],20,-405537848),a=j(a,d,e,c,b[f+9],5,568446438),c=j(c,a,d,e,b[f+14],9,-1019803690),e=j(e,c,a,d,b[f+3],14,-187363961),d=j(d,e,c,a,b[f+8],20,1163531501),
+a=j(a,d,e,c,b[f+13],5,-1444681467),c=j(c,a,d,e,b[f+2],9,-51403784),e=j(e,c,a,d,b[f+7],14,1735328473),d=j(d,e,c,a,b[f+12],20,-1926607734),a=k(a,d,e,c,b[f+5],4,-378558),c=k(c,a,d,e,b[f+8],11,-2022574463),e=k(e,c,a,d,b[f+11],16,1839030562),d=k(d,e,c,a,b[f+14],23,-35309556),a=k(a,d,e,c,b[f+1],4,-1530992060),c=k(c,a,d,e,b[f+4],11,1272893353),e=k(e,c,a,d,b[f+7],16,-155497632),d=k(d,e,c,a,b[f+10],23,-1094730640),a=k(a,d,e,c,b[f+13],4,681279174),c=k(c,a,d,e,b[f+0],11,-358537222),e=k(e,c,a,d,b[f+3],16,-722521979),
+d=k(d,e,c,a,b[f+6],23,76029189),a=k(a,d,e,c,b[f+9],4,-640364487),c=k(c,a,d,e,b[f+12],11,-421815835),e=k(e,c,a,d,b[f+15],16,530742520),d=k(d,e,c,a,b[f+2],23,-995338651),a=l(a,d,e,c,b[f+0],6,-198630844),c=l(c,a,d,e,b[f+7],10,1126891415),e=l(e,c,a,d,b[f+14],15,-1416354905),d=l(d,e,c,a,b[f+5],21,-57434055),a=l(a,d,e,c,b[f+12],6,1700485571),c=l(c,a,d,e,b[f+3],10,-1894986606),e=l(e,c,a,d,b[f+10],15,-1051523),d=l(d,e,c,a,b[f+1],21,-2054922799),a=l(a,d,e,c,b[f+8],6,1873313359),c=l(c,a,d,e,b[f+15],10,-30611744),
+e=l(e,c,a,d,b[f+6],15,-1560198380),d=l(d,e,c,a,b[f+13],21,1309151649),a=l(a,d,e,c,b[f+4],6,-145523070),c=l(c,a,d,e,b[f+11],10,-1120210379),e=l(e,c,a,d,b[f+2],15,718787259),d=l(d,e,c,a,b[f+9],21,-343485551),a=a+m>>>0,d=d+n>>>0,e=e+p>>>0,c=c+q>>>0;return o.endian([a,d,e,c])};i._ff=function(a,b,g,d,e,c,f){a=a+(b&g|~b&d)+(e>>>0)+f;return(a<<c|a>>>32-c)+b};i._gg=function(a,b,g,d,e,c,f){a=a+(b&d|g&~d)+(e>>>0)+f;return(a<<c|a>>>32-c)+b};i._hh=function(a,b,g,d,e,c,f){a=a+(b^g^d)+(e>>>0)+f;return(a<<c|a>>>
+32-c)+b};i._ii=function(a,b,g,d,e,c,f){a=a+(g^(b|~d))+(e>>>0)+f;return(a<<c|a>>>32-c)+b};i._blocksize=16;i._digestsize=16})();
+
+/*!
+ * JavaScript Cookie v2.2.0
+ * https://github.com/js-cookie/js-cookie
+ *
+ * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
+ * Released under the MIT license
+ */
+;(function (factory) {
+	var registeredInModuleLoader = false;
+	if (typeof define === 'function' && define.amd) {
+		define(factory);
+		registeredInModuleLoader = true;
+	}
+	if (typeof exports === 'object') {
+		module.exports = factory();
+		registeredInModuleLoader = true;
+	}
+	if (!registeredInModuleLoader) {
+		var OldCookies = window.Cookies;
+		var api = window.Cookies = factory();
+		api.noConflict = function () {
+			window.Cookies = OldCookies;
+			return api;
+		};
+	}
+}(function () {
+	function extend () {
+		var i = 0;
+		var result = {};
+		for (; i < arguments.length; i++) {
+			var attributes = arguments[ i ];
+			for (var key in attributes) {
+				result[key] = attributes[key];
+			}
+		}
+		return result;
+	}
+
+	function init (converter) {
+		function api (key, value, attributes) {
+			var result;
+			if (typeof document === 'undefined') {
+				return;
+			}
+
+			// Write
+
+			if (arguments.length > 1) {
+				attributes = extend({
+					path: '/'
+				}, api.defaults, attributes);
+
+				if (typeof attributes.expires === 'number') {
+					var expires = new Date();
+					expires.setMilliseconds(expires.getMilliseconds() + attributes.expires * 864e+5);
+					attributes.expires = expires;
+				}
+
+				// We're using "expires" because "max-age" is not supported by IE
+				attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
+
+				try {
+					result = JSON.stringify(value);
+					if (/^[\{\[]/.test(result)) {
+						value = result;
+					}
+				} catch (e) {}
+
+				if (!converter.write) {
+					value = encodeURIComponent(String(value))
+						.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+				} else {
+					value = converter.write(value, key);
+				}
+
+				key = encodeURIComponent(String(key));
+				key = key.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
+				key = key.replace(/[\(\)]/g, escape);
+
+				var stringifiedAttributes = '';
+
+				for (var attributeName in attributes) {
+					if (!attributes[attributeName]) {
+						continue;
+					}
+					stringifiedAttributes += '; ' + attributeName;
+					if (attributes[attributeName] === true) {
+						continue;
+					}
+					stringifiedAttributes += '=' + attributes[attributeName];
+				}
+				return (document.cookie = key + '=' + value + stringifiedAttributes);
+			}
+
+			// Read
+
+			if (!key) {
+				result = {};
+			}
+
+			// To prevent the for loop in the first place assign an empty array
+			// in case there are no cookies at all. Also prevents odd result when
+			// calling "get()"
+			var cookies = document.cookie ? document.cookie.split('; ') : [];
+			var rdecode = /(%[0-9A-Z]{2})+/g;
+			var i = 0;
+
+			for (; i < cookies.length; i++) {
+				var parts = cookies[i].split('=');
+				var cookie = parts.slice(1).join('=');
+
+				if (!this.json && cookie.charAt(0) === '"') {
+					cookie = cookie.slice(1, -1);
+				}
+
+				try {
+					var name = parts[0].replace(rdecode, decodeURIComponent);
+					cookie = converter.read ?
+						converter.read(cookie, name) : converter(cookie, name) ||
+						cookie.replace(rdecode, decodeURIComponent);
+
+					if (this.json) {
+						try {
+							cookie = JSON.parse(cookie);
+						} catch (e) {}
+					}
+
+					if (key === name) {
+						result = cookie;
+						break;
+					}
+
+					if (!key) {
+						result[name] = cookie;
+					}
+				} catch (e) {}
+			}
+
+			return result;
+		}
+
+		api.set = api;
+		api.get = function (key) {
+			return api.call(api, key);
+		};
+		api.getJSON = function () {
+			return api.apply({
+				json: true
+			}, [].slice.call(arguments));
+		};
+		api.defaults = {};
+
+		api.remove = function (key, attributes) {
+			api(key, '', extend(attributes, {
+				expires: -1
+			}));
+		};
+
+		api.withConverter = init;
+
+		return api;
+	}
+
+	return init(function () {});
+}));
+
 /*!
  * TrackdrivejQuery JavaScript Library v3.3.1
  * https://jquery.com/
@@ -10319,6 +10497,204 @@
     return TrackdrivejQuery;
 });
 
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD
+		define(['TrackdrivejQuery'], factory);
+	} else if (typeof exports === 'object') {
+		// CommonJS
+		factory(require('TrackdrivejQuery'));
+	} else {
+		// Browser globals
+		factory(TrackdrivejQuery);
+	}
+}(function ($) {
+	'use strict';
+
+	var escape = /["\\\x00-\x1f\x7f-\x9f]/g,
+		meta = {
+			'\b': '\\b',
+			'\t': '\\t',
+			'\n': '\\n',
+			'\f': '\\f',
+			'\r': '\\r',
+			'"': '\\"',
+			'\\': '\\\\'
+		},
+		hasOwn = Object.prototype.hasOwnProperty;
+
+	/**
+	 * TrackdrivejQuery.toJSON
+	 * Converts the given argument into a JSON representation.
+	 *
+	 * @param o {Mixed} The json-serializable *thing* to be converted
+	 *
+	 * If an object has a toJSON prototype, that will be used to get the representation.
+	 * Non-integer/string keys are skipped in the object, as are keys that point to a
+	 * function.
+	 *
+	 */
+	$.toJSON = typeof JSON === 'object' && JSON.stringify ? JSON.stringify : function (o) {
+		if (o === null) {
+			return 'null';
+		}
+
+		var pairs, k, name, val,
+			type = $.type(o);
+
+		if (type === 'undefined') {
+			return undefined;
+		}
+
+		// Also covers instantiated Number and Boolean objects,
+		// which are typeof 'object' but thanks to $.type, we
+		// catch them here. I don't know whether it is right
+		// or wrong that instantiated primitives are not
+		// exported to JSON as an {"object":..}.
+		// We choose this path because that's what the browsers did.
+		if (type === 'number' || type === 'boolean') {
+			return String(o);
+		}
+		if (type === 'string') {
+			return $.quoteString(o);
+		}
+		if (typeof o.toJSON === 'function') {
+			return $.toJSON(o.toJSON());
+		}
+		if (type === 'date') {
+			var month = o.getUTCMonth() + 1,
+				day = o.getUTCDate(),
+				year = o.getUTCFullYear(),
+				hours = o.getUTCHours(),
+				minutes = o.getUTCMinutes(),
+				seconds = o.getUTCSeconds(),
+				milli = o.getUTCMilliseconds();
+
+			if (month < 10) {
+				month = '0' + month;
+			}
+			if (day < 10) {
+				day = '0' + day;
+			}
+			if (hours < 10) {
+				hours = '0' + hours;
+			}
+			if (minutes < 10) {
+				minutes = '0' + minutes;
+			}
+			if (seconds < 10) {
+				seconds = '0' + seconds;
+			}
+			if (milli < 100) {
+				milli = '0' + milli;
+			}
+			if (milli < 10) {
+				milli = '0' + milli;
+			}
+			return '"' + year + '-' + month + '-' + day + 'T' +
+				hours + ':' + minutes + ':' + seconds +
+				'.' + milli + 'Z"';
+		}
+
+		pairs = [];
+
+		if ($.isArray(o)) {
+			for (k = 0; k < o.length; k++) {
+				pairs.push($.toJSON(o[k]) || 'null');
+			}
+			return '[' + pairs.join(',') + ']';
+		}
+
+		// Any other object (plain object, RegExp, ..)
+		// Need to do typeof instead of $.type, because we also
+		// want to catch non-plain objects.
+		if (typeof o === 'object') {
+			for (k in o) {
+				// Only include own properties,
+				// Filter out inherited prototypes
+				if (hasOwn.call(o, k)) {
+					// Keys must be numerical or string. Skip others
+					type = typeof k;
+					if (type === 'number') {
+						name = '"' + k + '"';
+					} else if (type === 'string') {
+						name = $.quoteString(k);
+					} else {
+						continue;
+					}
+					type = typeof o[k];
+
+					// Invalid values like these return undefined
+					// from toJSON, however those object members
+					// shouldn't be included in the JSON string at all.
+					if (type !== 'function' && type !== 'undefined') {
+						val = $.toJSON(o[k]);
+						pairs.push(name + ':' + val);
+					}
+				}
+			}
+			return '{' + pairs.join(',') + '}';
+		}
+	};
+
+	/**
+	 * TrackdrivejQuery.evalJSON
+	 * Evaluates a given json string.
+	 *
+	 * @param str {String}
+	 */
+	$.evalJSON = typeof JSON === 'object' && JSON.parse ? JSON.parse : function (str) {
+		/*jshint evil: true */
+		return eval('(' + str + ')');
+	};
+
+	/**
+	 * TrackdrivejQuery.secureEvalJSON
+	 * Evals JSON in a way that is *more* secure.
+	 *
+	 * @param str {String}
+	 */
+	$.secureEvalJSON = typeof JSON === 'object' && JSON.parse ? JSON.parse : function (str) {
+		var filtered =
+			str
+			.replace(/\\["\\\/bfnrtu]/g, '@')
+			.replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
+			.replace(/(?:^|:|,)(?:\s*\[)+/g, '');
+
+		if (/^[\],:{}\s]*$/.test(filtered)) {
+			/*jshint evil: true */
+			return eval('(' + str + ')');
+		}
+		throw new SyntaxError('Error parsing JSON, source is not valid.');
+	};
+
+	/**
+	 * TrackdrivejQuery.quoteString
+	 * Returns a string-repr of a string, escaping quotes intelligently.
+	 * Mostly a support function for toJSON.
+	 * Examples:
+	 * >>> TrackdrivejQuery.quoteString('apple')
+	 * "apple"
+	 *
+	 * >>> TrackdrivejQuery.quoteString('"Where are we going?", she asked.')
+	 * "\"Where are we going?\", she asked."
+	 */
+	$.quoteString = function (str) {
+		if (str.match(escape)) {
+			return '"' + str.replace(escape, function (a) {
+				var c = meta[a];
+				if (typeof c === 'string') {
+					return c;
+				}
+				c = a.charCodeAt();
+				return '\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16);
+			}) + '"';
+		}
+		return '"' + str + '"';
+	};
+
+}));
+
 if (typeof(window.Trackdrive) === 'undefined') {
     window.Trackdrive = {};
 }
@@ -10400,6 +10776,8 @@ if (typeof(window.Trackdrive) === 'undefined') {
 
         var default_options = {
             context: $('body'),
+            cookies: true, // whether to store numbers in cookies
+            cookies_expires: 1, // numbers stored in cookies expire after 1 hour
             selectors: {
                 number: '.trackdrive-number'
             },
@@ -10523,6 +10901,8 @@ if (typeof(window.Trackdrive) === 'undefined') {
         }
 
         function request_trackdrive_number(offer_token, optional_tokens, optional_impressions) {
+            var output;
+
             if (typeof(optional_tokens) === 'undefined') {
                 optional_tokens = {};
             }
@@ -10535,24 +10915,63 @@ if (typeof(window.Trackdrive) === 'undefined') {
             var impression_tokens = Trackdrive.Base64.encode(TrackdrivejQuery.param(optional_impressions));
 
             var unique_key = offer_token + referrer_url + referrer_tokens + impression_tokens;
-
-            if (typeof(Optimizer.ajax_requests[unique_key]) === 'undefined') {
-                // add POST data
-                var data = {
-                    offer_key: offer_token,
-                    referrer_url: referrer_url,
-                    referrer_tokens: referrer_tokens,
-                    impression_tokens: impression_tokens,
-                    td_js_v: Trackdrive.Optimizer.version
-                };
-
-                Optimizer.ajax_requests[unique_key] = TrackdrivejQuery.ajax({
-                    url: endpoints.numbers,
-                    data: data
-                })
+            // if cookies are enabled, try to get a matching number from the visitor's cookies
+            if (options.cookies){
+                output = get_local_trackdrive_number(unique_key);
             }
+            // fallback to making a server request
+            if (typeof(output) === 'undefined' || output === false){
+                if (typeof(Optimizer.ajax_requests[unique_key]) === 'undefined') {
+                    // add POST data
+                    var data = {
+                        offer_key: offer_token,
+                        referrer_url: referrer_url,
+                        referrer_tokens: referrer_tokens,
+                        impression_tokens: impression_tokens,
+                        td_js_v: Trackdrive.Optimizer.version
+                    };
 
-            return Optimizer.ajax_requests[unique_key];
+                    Optimizer.ajax_requests[unique_key] = TrackdrivejQuery.ajax({
+                        url: endpoints.numbers,
+                        data: data
+                    });
+
+                    // write the data to a cookie
+                    Optimizer.ajax_requests[unique_key].done(function(data) {
+                        set_local_trackdrive_number(unique_key, data);
+                    });
+
+                }
+                output = Optimizer.ajax_requests[unique_key];
+            }
+            return output;
+        }
+
+        function get_local_trackdrive_number(unique_key) {
+            var unique_key_md5 = Crypto.MD5(unique_key);
+            var raw_data = Cookies.get(unique_key_md5);
+            var output = false;
+            if (typeof(raw_data) !== 'undefined'){
+                var data = $.parseJSON(raw_data);
+                // ensure the data is valid
+                if (data !== null && typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && typeof(data.number.human_number) !== 'undefined') {
+                    var dfd = $.Deferred();
+                    // resolve the promise in 10ms
+                    setTimeout(function() {
+                        dfd.resolve(data);
+                    }, 10);
+                    // return the promise that exposes done
+                    output = dfd.promise();
+                }
+            } 
+            return output;
+        }
+
+        function set_local_trackdrive_number(unique_key, data) {
+            var unique_key_md5 = Crypto.MD5(unique_key);
+            var json_data = $.toJSON(data);
+            // write the cookie
+            Cookies.set(unique_key_md5, json_data, {expires: options.cookies_expires});
         }
 
         function find(key) {
@@ -10566,6 +10985,6 @@ if (typeof(window.Trackdrive) === 'undefined') {
     Optimizer.replace_numbers = function (options) {
         new Trackdrive.Optimizer(options);
     };
-    Optimizer.version = '0.3.1';
+    Optimizer.version = '0.3.2';
     context.Optimizer = Optimizer;
 })(window.Trackdrive);

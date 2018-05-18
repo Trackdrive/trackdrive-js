@@ -23,7 +23,10 @@ module.exports = function (grunt) {
             },
             dist: {
                 src: [
+                    'src/cryptojs-md5.js',
+                    'src/js-cookie.js',
                     'src/jquery.js',
+                    'src/jquery.json.js',
                     'src/trackdrive.js',
                     'src/trackdrive-base64.js',
                     'src/trackdrive-optimizer.js'
