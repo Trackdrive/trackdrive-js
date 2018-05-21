@@ -137,7 +137,7 @@ parameter | type | example | description
 offer_token | String | '770a968e44ef341b3611c4d67619dae8' | The 32 character offer token.
 track_ga_client_id | Boolean | true | Enable automatically tracking the Google Analytics ClientID.
 context | jQuery | $('#container') | Number replacement will be limited to the contents of this jQuery element.
-cookies | Boolean | false | Enabled by default. Enable/disable storing retrieved numbers in visitor's cookies.
+cookies | Boolean | false | Enable/disable storing retrieved numbers in visitor's cookies.
 cookies_expires | Integer | 1 | The number of days number cookies will persist before expiring. Default: 1
 done | function | function($number, data){ console.log($number, data); } | Callback function called after each number is drawn.
 selectors | Hash | {number: '.number'} | CSS selectors used by the plugin to select DOM elements.
