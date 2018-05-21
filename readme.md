@@ -2,8 +2,13 @@
 
 Track visitors to your landing pages with unique telephone numbers from https://trackdrive.net/
 
+- [Basic Usage](https://github.com/Trackdrive/trackdrive-js/#basic-usage)
+- [Basic Options](https://github.com/Trackdrive/trackdrive-js/#basic-options)
+- [Google Analytics](https://github.com/Trackdrive/trackdrive-js/#google-analytics)
+- [Advanced Usage](https://github.com/Trackdrive/trackdrive-js/#advanced-usage)
 
-## Usage
+
+## Basic Usage
 
 #### 1. Include the trackdrive optimizer library on your page.
 
@@ -33,7 +38,7 @@ Your token can be obtained from one of your offers: https://trackdrive.net/offer
 
 
 
-## Advanced Options
+## Basic Options
 
 ### data-offer-token
 
@@ -105,24 +110,32 @@ input | output
 `data-text="Click To Call" data-hyperlink="true"` | `<a href="tel:+18558797917">Click To Call</a>`
 `data-text="<button>Click here to call [human_number]</button>"` | `<button>Click here to call (855) 879-7917</button>`
 
-## Trackdrive.Optimizer Options
 
-The options available to `Trackdrive.Optimizer.replace_numbers(options)`
+## Google Analytics
 
-``` javascript
+Automatically track the google analytics clientId by setting `track_ga_client_id: true`. For example:
 
-var options = {
-  offer_token: offer_token,
-  done: done
-};
-
-Trackdrive.Optimizer.replace_numbers(options);
-
+``` html
+<script>
+    TrackdrivejQuery(function () {
+        Trackdrive.Optimizer.replace_numbers({
+          offer_token: 'f47c910d0b3429902ee69290009e36a4',
+          track_ga_client_id: true
+        });
+    });
+</script>
 ```
+
+
+
+## Advanced Usage
+
+The options available to `Trackdrive.Optimizer.replace_numbers(options)` and `new Trackdrive.Optimizer(options)`
 
 parameter | type | example | description
 --- | --- | --- | ---
 offer_token | String | '770a968e44ef341b3611c4d67619dae8' | The 32 character offer token.
+track_ga_client_id | Boolean | true | Enable automatically tracking the Google Analytics ClientID.
 context | jQuery | $('#container') | Number replacement will be limited to the contents of this jQuery element.
 cookies | Boolean | false | Enabled by default. Enable/disable storing retrieved numbers in visitor's cookies.
 cookies_expires | Integer | 1 | The number of days number cookies will persist before expiring. Default: 1
@@ -131,7 +144,7 @@ selectors | Hash | {number: '.number'} | CSS selectors used by the plugin to sel
 endpoints | Hash | {numbers: 'https://custom-domain.com/api/v1/numbers.json'} | HTTP endpoints used by the plugin when making API requests.
 
 
-## Trackdrive.Optimizer#request_number
+### Trackdrive.Optimizer#request_number
 
 Request a number getting back JSON, using the optimizer javascript api.
 

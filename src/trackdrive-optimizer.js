@@ -18,10 +18,13 @@
         var $ = TrackdrivejQuery;
         var self = this;
 
+        var ga_tracker;
+
         var default_options = {
             context: $('body'),
-            cookies: true, // whether to store numbers in cookies
-            cookies_expires: 1, // numbers stored in cookies expire after 1 hour
+            track_ga_client_id: false,
+            cookies: false, // whether to store numbers in cookies
+            cookies_expires: 1/240, // numbers stored in cookies expire after 6 minutes
             selectors: {
                 number: '.trackdrive-number'
             },
@@ -51,8 +54,6 @@
             var offer_token = get_offer_token($number);
             // onwards
             if (offer_token && not_replaced) {
-                // hide the default number
-                $number.hide();
                 // Get additional optional tokens from the DOM element.
                 //
                 // For example, give the following HTML:
@@ -154,6 +155,11 @@
                 optional_impressions = {};
             }
 
+            if (options.track_ga_client_id && typeof(ga_tracker) !== 'undefined' && ga_tracker !== null){
+                optional_impressions.ga_client_id = ga_tracker.get('clientId');
+                console.log(optional_impressions);
+            }
+
             var referrer_url = Trackdrive.Base64.encode(window.location.href.toString());
             var referrer_tokens = Trackdrive.Base64.encode(TrackdrivejQuery.param(optional_tokens));
             var impression_tokens = Trackdrive.Base64.encode(TrackdrivejQuery.param(optional_impressions));
@@ -222,13 +228,26 @@
             return options.context.find(selectors[key]);
         }
 
-        initialize();
+        // are we integrating with GA?
+        if (options.track_ga_client_id && typeof(ga) === 'function'){
+            // then delay initializing until GA has loaded
+            ga(function(tracker) {
+                // grab a reference to the GA tracker
+                ga_tracker = tracker;
+                // onwards
+                initialize();
+            });
+        } else {
+            // load normally
+            initialize();
+        }
+        
     };
     // global ajax requests
     Optimizer.ajax_requests = {};
     Optimizer.replace_numbers = function (options) {
         new Trackdrive.Optimizer(options);
     };
-    Optimizer.version = '0.3.2';
+    Optimizer.version = '0.3.3';
     context.Optimizer = Optimizer;
 })(window.Trackdrive);

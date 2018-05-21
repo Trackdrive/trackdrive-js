@@ -1,6 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <title>Trackdrive Example</title>
@@ -40,11 +38,11 @@
                 
                 // append the response to the container
                 var html = "<h3><strong>API Response:</strong></h3><div class='code'>" + JSON.stringify(data) + "</div>";
-                TrackdrivejQuery('.container').append(html);
+                TrackdrivejQuery('body').append(html);
 
                 // append each number key and value
                 for (var key in data['number']){
-                    TrackdrivejQuery('.container').append("<p><strong>" + key + ":</strong>" + data['number'][key] + "</p>");
+                    TrackdrivejQuery('body').append("<p><strong>" + key + ":</strong>" + data['number'][key] + "</p>");
                 }
             });
         });
@@ -52,61 +50,6 @@
 
 </head>
 <body>
-
-<div class="container">
-
-    <div id="warning" style="display: none">
-        In order for this test script to work, you must set a URL parameter with your token.
-        <br>
-        <br>
-        EG: ?token=your-token
-        <br>
-        <br>
-        Get your token from <a href="https://trackdrive.net/offers/">https://trackdrive.net/offers/</a><br>
-    </div>
-
-    <h1>trackdrive.js</h1>
-    <hr>
-
-</div>
-
-<style>
-    body {
-        background-color: #f2f2f2;
-    }
-
-    hr {
-        opacity: 0.4;
-    }
-
-    #warning {
-        background: #cea11d;
-        color: #fff;
-        font-size: 14px;
-        padding: 20px;
-        border-radius: 10px;
-    }
-
-    #warning a {
-        font-weight: bold;
-        color: #fff;
-    }
-
-    .container {
-        margin: 20px auto;
-        font-family: arial;
-        padding: 40px;
-        width: 800px;
-        background-color: #fff;
-    }
-
-    .code{
-        font-size: 13px;
-        padding: 10px;
-        background: #f2f2f2;
-        line-height: 24px;
-    }
-</style>
 
 </body>
 </html>
