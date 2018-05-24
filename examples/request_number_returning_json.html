@@ -13,7 +13,12 @@
             }
 
             // requesting a number returning JSON
-            var api = new Trackdrive.Optimizer();
+            var api = new Trackdrive.Optimizer({
+                default: {
+                    plain_number: "+18886024660",
+                    human_number: "(888) 602-4660",
+                }
+            });
 
             // optional tokens that will be tracked by your numbers
             // these values are tracked in addition to whatever url params you have defined on your offer.
