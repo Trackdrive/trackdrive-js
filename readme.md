@@ -110,11 +110,7 @@ Automatically track the google analytics clientId by setting `track_ga_client_id
     TrackdrivejQuery(function () {
         Trackdrive.Optimizer.replace_numbers({
           offer_token: 'f47c910d0b3429902ee69290009e36a4',
-          track_ga_client_id: true,
-          default: {
-            plain_number: "+18886024660",
-            human_number: "(888) 602-4660"
-          }
+          track_ga_client_id: true
         });
     });
 </script>
