@@ -31,7 +31,7 @@
             var promise = api.request_number(offer_token, optional_tokens);
 
             // once the trackdrive api responds, this promise will fire
-            promise.done(function(data){
+            promise.always(function(data){
                 // append the response to the container
                 var html = "<h3><strong>API Response:</strong></h3><div class='code'>" + JSON.stringify(data) + "</div>";
                 TrackdrivejQuery('body').append(html);

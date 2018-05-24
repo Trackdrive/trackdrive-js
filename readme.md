@@ -160,7 +160,7 @@ var optional_tokens = {
 var promise = api.request_number(offer_token, optional_tokens);
 
 // once the trackdrive api responds, this promise will fire
-promise.done(function(data){
+promise.always(function(data){
 
   // assign the human number to a variable. EG: "(866) 230-0823"
   var human_number = data.number.human_number;

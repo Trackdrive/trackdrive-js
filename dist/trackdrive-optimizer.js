@@ -10825,7 +10825,7 @@ if (typeof(window.Trackdrive) === 'undefined') {
                 promise.always(function () {
                     $number.show();
                 });
-                promise.done(function (data) {
+                promise.always(function (data) {
                     draw_number($number, data);
 
                     if (typeof(options.done) === 'function') {
@@ -10872,18 +10872,9 @@ if (typeof(window.Trackdrive) === 'undefined') {
                 format = 'human';
             }
 
-            var number;
             // use server response if present
             if (typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && typeof(data.number.human_number) !== 'undefined') {
                 var number = data.number;
-
-            // use the default if defined
-            } else if (typeof(options.default) !== 'undefined' && typeof(options.default.human_number) !== 'undefined') {
-                var number = options.default;
-            }
-
-            // ensure a valid response was returned
-            if (typeof(number) !== 'undefined' && typeof(number.human_number) !== 'undefined') {
                 // update the DOM with the number
                 var html = '';
                 // output custom text if given
@@ -10953,10 +10944,28 @@ if (typeof(window.Trackdrive) === 'undefined') {
                         default_number: default_number
                     };
 
-                    Optimizer.ajax_requests[unique_key] = TrackdrivejQuery.ajax({
+                    var request_handler = TrackdrivejQuery.ajax({
                         url: endpoints.numbers,
-                        data: data
+                        data: data,
+                        timeout: 3000
                     });
+
+                    var deferred_handler = $.Deferred();
+
+                    request_handler.always(function(data) {
+                        // invalid response?
+                        if (typeof(data) === 'undefined' || typeof(data.number) === 'undefined' || typeof(data.number.human_number) === 'undefined') {
+                            // inject the default if present and missing in server response
+                            if (typeof(options.default) !== 'undefined') {
+                                data = {number: options.default};
+                            }
+                        }
+                        // pass it up the chain
+                        deferred_handler.resolve(data);
+                    });
+
+                    // return the callback
+                    Optimizer.ajax_requests[unique_key] = deferred_handler.promise();
 
                     // write the data to a cookie
                     Optimizer.ajax_requests[unique_key].done(function(data) {
