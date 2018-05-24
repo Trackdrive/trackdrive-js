@@ -1,4 +1,4 @@
-/*! Trackdrive Optimizer - v0.3.3 - 2018-05-21
+/*! Trackdrive Optimizer - v0.3.4 - 2018-05-23
 * https://github.com/Trackdrive/trackdrive-optimizer
 * Copyright (c) 2018 Trackdrive; Licensed  */
 (typeof Crypto=="undefined"||!Crypto.util)&&function(){var m=window.Crypto={},o=m.util={rotl:function(h,g){return h<<g|h>>>32-g},rotr:function(h,g){return h<<32-g|h>>>g},endian:function(h){if(h.constructor==Number)return o.rotl(h,8)&16711935|o.rotl(h,24)&4278255360;for(var g=0;g<h.length;g++)h[g]=o.endian(h[g]);return h},randomBytes:function(h){for(var g=[];h>0;h--)g.push(Math.floor(Math.random()*256));return g},bytesToWords:function(h){for(var g=[],i=0,a=0;i<h.length;i++,a+=8)g[a>>>5]|=(h[i]&255)<<
@@ -10799,8 +10799,8 @@ if (typeof(window.Trackdrive) === 'undefined') {
             replace_all();
         }
 
-        self.request_number = function(offer_token, optional_tokens, optional_impressions) {
-            var promise = request_trackdrive_number(offer_token, optional_tokens, optional_impressions);
+        self.request_number = function(offer_token, optional_tokens) {
+            var promise = request_trackdrive_number(offer_token, optional_tokens);
             return promise;
         };
 
@@ -10819,9 +10819,8 @@ if (typeof(window.Trackdrive) === 'undefined') {
                 //      {"interest":"loans"}
                 //
                 var optional_tokens = $number.data('tokens');
-                var optional_impressions = $number.data('impressions');
                 // Request the number
-                var promise = request_trackdrive_number(offer_token, optional_tokens, optional_impressions);
+                var promise = request_trackdrive_number(offer_token, optional_tokens);
                 // Wait for the server to respond
                 promise.always(function () {
                     $number.show();
@@ -10901,26 +10900,22 @@ if (typeof(window.Trackdrive) === 'undefined') {
             }
         }
 
-        function request_trackdrive_number(offer_token, optional_tokens, optional_impressions) {
+        function request_trackdrive_number(offer_token, optional_tokens) {
             var output;
 
             if (typeof(optional_tokens) === 'undefined') {
                 optional_tokens = {};
             }
-            if (typeof(optional_impressions) === 'undefined') {
-                optional_impressions = {};
-            }
 
             if (options.track_ga_client_id && typeof(ga_tracker) !== 'undefined' && ga_tracker !== null){
-                optional_impressions.ga_client_id = ga_tracker.get('clientId');
-                console.log(optional_impressions);
+                optional_tokens.ga_client_id = ga_tracker.get('clientId');
             }
 
             var referrer_url = Trackdrive.Base64.encode(window.location.href.toString());
             var referrer_tokens = Trackdrive.Base64.encode(TrackdrivejQuery.param(optional_tokens));
-            var impression_tokens = Trackdrive.Base64.encode(TrackdrivejQuery.param(optional_impressions));
 
-            var unique_key = offer_token + referrer_url + referrer_tokens + impression_tokens;
+
+            var unique_key = offer_token + referrer_url + referrer_tokens;
             // if cookies are enabled, try to get a matching number from the visitor's cookies
             if (options.cookies){
                 output = get_local_trackdrive_number(unique_key);
@@ -10933,7 +10928,6 @@ if (typeof(window.Trackdrive) === 'undefined') {
                         offer_key: offer_token,
                         referrer_url: referrer_url,
                         referrer_tokens: referrer_tokens,
-                        impression_tokens: impression_tokens,
                         td_js_v: Trackdrive.Optimizer.version
                     };
 

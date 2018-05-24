@@ -60,16 +60,6 @@ Additional tokens can be passed by setting the html attribute `data-tokens` with
 ```
 
 
-### data-impressions
-
-Unqiue impression tokens can be passed by setting the html attribute `data-impressions` with JSON data.
-
-
-``` html
-<span class="trackdrive-number" data-impressions='{"gclick":"fj2380fgj23098fj3290ffsf"}'>(855) 654 2938</span>
-```
-
-
 
 ### data-format
 
@@ -159,14 +149,8 @@ var optional_tokens = {
   s1: 'kittens'
 };
 
-// optional unique impression tokens
-// these values are tracked in addition to whatever impression params you have defined on your offer.
-var optional_impressions = {
-    gclick: 'vn38290fjn2308f9j2390fj2390f23'
-}
-
 // get back a promise
-var promise = api.request_number(offer_token, optional_tokens, optional_impressions);
+var promise = api.request_number(offer_token, optional_tokens);
 
 // once the trackdrive api responds, this promise will fire
 promise.done(function(data){
