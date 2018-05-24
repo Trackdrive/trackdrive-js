@@ -110,7 +110,11 @@ Automatically track the google analytics clientId by setting `track_ga_client_id
     TrackdrivejQuery(function () {
         Trackdrive.Optimizer.replace_numbers({
           offer_token: 'f47c910d0b3429902ee69290009e36a4',
-          track_ga_client_id: true
+          track_ga_client_id: true,
+          default: {
+            plain_number: "+18886024660",
+            human_number: "(888) 602-4660"
+          }
         });
     });
 </script>
@@ -125,6 +129,7 @@ The options available to `Trackdrive.Optimizer.replace_numbers(options)` and `ne
 parameter | type | example | description
 --- | --- | --- | ---
 offer_token | String | '770a968e44ef341b3611c4d67619dae8' | The 32 character offer token.
+default | Hash | {plain_number: "+18886024660", human_number: "(888) 602-4660"} | The default number that will be used if tracking is unavailable
 track_ga_client_id | Boolean | true | Enable automatically tracking the Google Analytics ClientID.
 context | jQuery | $('#container') | Number replacement will be limited to the contents of this jQuery element.
 cookies | Boolean | false | Enable/disable storing retrieved numbers in visitor's cookies.
@@ -141,7 +146,12 @@ Request a number getting back JSON, using the optimizer javascript api.
 ``` javascript
 
 // requesting a number returning JSON
-var api = new Trackdrive.Optimizer();
+var api = new Trackdrive.Optimizer({
+  default: {
+    plain_number: "+18886024660",
+    human_number: "(888) 602-4660"
+  }
+});
 
 // optional tokens that will be tracked by your numbers
 // these values are tracked in addition to whatever url params you have defined on your offer.

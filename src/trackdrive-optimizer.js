@@ -86,9 +86,13 @@
         };
 
         function replace_all() {
-            find('number').each(function () {
-                self.replace($(this));
-            });
+            if (find('number').length <= 0){
+                console.warn('Trackdrive Optimizer did not find any DOM elements matching: ' + selectors.number);
+            } else {
+                find('number').each(function () {
+                    self.replace($(this));
+                });
+            }
         }
 
         function get_offer_token($number) {
@@ -111,16 +115,24 @@
             if (typeof(format) === 'undefined') {
                 format = 'human';
             }
-            // ensure a valid response was returned
+
+            var number;
+            // use server response if present
             if (typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && typeof(data.number.human_number) !== 'undefined') {
                 var number = data.number;
-                number.number = number.human_number;
+
+            // use the default if defined
+            } else if (typeof(options.default) !== 'undefined' && typeof(options.default.human_number) !== 'undefined') {
+                var number = options.default;
+            }
+
+            // ensure a valid response was returned
+            if (typeof(number) !== 'undefined' && typeof(number.human_number) !== 'undefined') {
                 // update the DOM with the number
                 var html = '';
                 // output custom text if given
                 if (text !== null && typeof(text) !== 'undefined' && text.length > 0) {
                     html = text;
-
                     // replace [number] with 800 123 1234
                     for (var key in number) {
                         var value = number[key];
@@ -133,7 +145,6 @@
                 }
                 // wrap in link?
                 if (link) {
-
                     if ($number.is('a')) {
                         $number.attr('href', 'tel:' + number.plain_number.toString());
                     } else {
@@ -158,7 +169,6 @@
             var referrer_url = Trackdrive.Base64.encode(window.location.href.toString());
             var referrer_tokens = Trackdrive.Base64.encode(TrackdrivejQuery.param(optional_tokens));
 
-
             var unique_key = offer_token + referrer_url + referrer_tokens;
             // if cookies are enabled, try to get a matching number from the visitor's cookies
             if (options.cookies){
@@ -167,12 +177,24 @@
             // fallback to making a server request
             if (typeof(output) === 'undefined' || output === false){
                 if (typeof(Optimizer.ajax_requests[unique_key]) === 'undefined') {
+
+                    var default_number;
+
+                    if (typeof(options.default) !== 'undefined'){
+                        if (typeof(options.default.plain_number) !== 'undefined'){
+                            default_number = options.default.plain_number;
+                        } else if (typeof(options.default.human_number) !== 'undefined'){
+                            default_number = options.default.human_number;
+                        }
+                        
+                    }
                     // add POST data
                     var data = {
                         offer_key: offer_token,
                         referrer_url: referrer_url,
                         referrer_tokens: referrer_tokens,
-                        td_js_v: Trackdrive.Optimizer.version
+                        td_js_v: Trackdrive.Optimizer.version,
+                        default_number: default_number
                     };
 
                     Optimizer.ajax_requests[unique_key] = TrackdrivejQuery.ajax({
@@ -242,6 +264,6 @@
     Optimizer.replace_numbers = function (options) {
         new Trackdrive.Optimizer(options);
     };
-    Optimizer.version = '0.3.4';
+    Optimizer.version = '0.3.5';
     context.Optimizer = Optimizer;
 })(window.Trackdrive);

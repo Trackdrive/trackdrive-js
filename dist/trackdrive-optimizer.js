@@ -1,4 +1,4 @@
-/*! Trackdrive Optimizer - v0.3.4 - 2018-05-23
+/*! Trackdrive Optimizer - v0.3.5 - 2018-05-24
 * https://github.com/Trackdrive/trackdrive-optimizer
 * Copyright (c) 2018 Trackdrive; Licensed  */
 (typeof Crypto=="undefined"||!Crypto.util)&&function(){var m=window.Crypto={},o=m.util={rotl:function(h,g){return h<<g|h>>>32-g},rotr:function(h,g){return h<<32-g|h>>>g},endian:function(h){if(h.constructor==Number)return o.rotl(h,8)&16711935|o.rotl(h,24)&4278255360;for(var g=0;g<h.length;g++)h[g]=o.endian(h[g]);return h},randomBytes:function(h){for(var g=[];h>0;h--)g.push(Math.floor(Math.random()*256));return g},bytesToWords:function(h){for(var g=[],i=0,a=0;i<h.length;i++,a+=8)g[a>>>5]|=(h[i]&255)<<
@@ -10842,9 +10842,13 @@ if (typeof(window.Trackdrive) === 'undefined') {
         };
 
         function replace_all() {
-            find('number').each(function () {
-                self.replace($(this));
-            });
+            if (find('number').length <= 0){
+                console.warn('Trackdrive Optimizer did not find any DOM elements matching: ' + selectors.number);
+            } else {
+                find('number').each(function () {
+                    self.replace($(this));
+                });
+            }
         }
 
         function get_offer_token($number) {
@@ -10867,16 +10871,24 @@ if (typeof(window.Trackdrive) === 'undefined') {
             if (typeof(format) === 'undefined') {
                 format = 'human';
             }
-            // ensure a valid response was returned
+
+            var number;
+            // use server response if present
             if (typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && typeof(data.number.human_number) !== 'undefined') {
                 var number = data.number;
-                number.number = number.human_number;
+
+            // use the default if defined
+            } else if (typeof(options.default) !== 'undefined' && typeof(options.default.human_number) !== 'undefined') {
+                var number = options.default;
+            }
+
+            // ensure a valid response was returned
+            if (typeof(number) !== 'undefined' && typeof(number.human_number) !== 'undefined') {
                 // update the DOM with the number
                 var html = '';
                 // output custom text if given
                 if (text !== null && typeof(text) !== 'undefined' && text.length > 0) {
                     html = text;
-
                     // replace [number] with 800 123 1234
                     for (var key in number) {
                         var value = number[key];
@@ -10889,7 +10901,6 @@ if (typeof(window.Trackdrive) === 'undefined') {
                 }
                 // wrap in link?
                 if (link) {
-
                     if ($number.is('a')) {
                         $number.attr('href', 'tel:' + number.plain_number.toString());
                     } else {
@@ -10914,7 +10925,6 @@ if (typeof(window.Trackdrive) === 'undefined') {
             var referrer_url = Trackdrive.Base64.encode(window.location.href.toString());
             var referrer_tokens = Trackdrive.Base64.encode(TrackdrivejQuery.param(optional_tokens));
 
-
             var unique_key = offer_token + referrer_url + referrer_tokens;
             // if cookies are enabled, try to get a matching number from the visitor's cookies
             if (options.cookies){
@@ -10923,12 +10933,24 @@ if (typeof(window.Trackdrive) === 'undefined') {
             // fallback to making a server request
             if (typeof(output) === 'undefined' || output === false){
                 if (typeof(Optimizer.ajax_requests[unique_key]) === 'undefined') {
+
+                    var default_number;
+
+                    if (typeof(options.default) !== 'undefined'){
+                        if (typeof(options.default.plain_number) !== 'undefined'){
+                            default_number = options.default.plain_number;
+                        } else if (typeof(options.default.human_number) !== 'undefined'){
+                            default_number = options.default.human_number;
+                        }
+                        
+                    }
                     // add POST data
                     var data = {
                         offer_key: offer_token,
                         referrer_url: referrer_url,
                         referrer_tokens: referrer_tokens,
-                        td_js_v: Trackdrive.Optimizer.version
+                        td_js_v: Trackdrive.Optimizer.version,
+                        default_number: default_number
                     };
 
                     Optimizer.ajax_requests[unique_key] = TrackdrivejQuery.ajax({
@@ -10998,6 +11020,6 @@ if (typeof(window.Trackdrive) === 'undefined') {
     Optimizer.replace_numbers = function (options) {
         new Trackdrive.Optimizer(options);
     };
-    Optimizer.version = '0.3.4';
+    Optimizer.version = '0.3.5';
     context.Optimizer = Optimizer;
 })(window.Trackdrive);
