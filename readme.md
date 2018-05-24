@@ -143,6 +143,7 @@ Request a number getting back JSON, using the optimizer javascript api.
 
 // requesting a number returning JSON
 var api = new Trackdrive.Optimizer({
+  track_ga_client_id: true,
   default: {
     plain_number: "+18886024660",
     human_number: "(888) 602-4660"
