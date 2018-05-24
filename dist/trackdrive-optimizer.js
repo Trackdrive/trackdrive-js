@@ -10998,6 +10998,6 @@ if (typeof(window.Trackdrive) === 'undefined') {
     Optimizer.replace_numbers = function (options) {
         new Trackdrive.Optimizer(options);
     };
-    Optimizer.version = '0.3.3';
+    Optimizer.version = '0.3.4';
     context.Optimizer = Optimizer;
 })(window.Trackdrive);
