@@ -4,7 +4,8 @@ Track visitors to your landing pages with unique telephone numbers from https://
 
 - [Basic Usage](https://github.com/Trackdrive/trackdrive-js/#basic-usage)
 - [Google Analytics](https://github.com/Trackdrive/trackdrive-js/#google-analytics)
-- [Advanced Usage](https://github.com/Trackdrive/trackdrive-js/#advanced-usage)
+- [Options](https://github.com/Trackdrive/trackdrive-js/#options)
+- [Advanced Developer Example](https://github.com/Trackdrive/trackdrive-js/#advanced-developer-example)
 
 
 ## Basic Usage
@@ -66,8 +67,7 @@ Automatically track the google analytics clientId by setting `track_ga_client_id
 ```
 
 
-
-## Advanced Usage
+## Options
 
 The options available to `Trackdrive.Optimizer.replace_all(options)` and `new Trackdrive.Optimizer(options)`
 
@@ -84,6 +84,9 @@ done | function | function($number, data){ console.log($number, data); } | Callb
 selectors | Hash | {number: '.number'} | CSS selectors used by the plugin to select DOM elements.
 endpoints | Hash | {numbers: 'https://custom-domain.com/api/v1/numbers.json'} | HTTP endpoints used by the plugin when making API requests.
 
+
+
+## Advanced Developer Example
 
 ### Trackdrive.Optimizer#request_number
 
