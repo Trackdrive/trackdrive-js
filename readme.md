@@ -57,10 +57,10 @@ Automatically track the google analytics clientId by setting `track_ga_client_id
 ``` html
 <script>
     TrackdrivejQuery(function () {
-        Trackdrive.Optimizer.replace_numbers({
+        Trackdrive.Optimizer.replace_all({
           offer_token: 'f47c910d0b3429902ee69290009e36a4',
           track_ga_client_id: true
-        });
+        }, [['(855) 654 2938', 'human_number']]);
     });
 </script>
 ```
@@ -69,7 +69,7 @@ Automatically track the google analytics clientId by setting `track_ga_client_id
 
 ## Advanced Usage
 
-The options available to `Trackdrive.Optimizer.replace_numbers(options)` and `new Trackdrive.Optimizer(options)`
+The options available to `Trackdrive.Optimizer.replace_all(options)` and `new Trackdrive.Optimizer(options)`
 
 parameter | type | example | description
 --- | --- | --- | ---
