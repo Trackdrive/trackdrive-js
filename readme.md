@@ -19,9 +19,9 @@ Track visitors to your landing pages with unique telephone numbers from https://
 
 ``` html
 
-<p>(855) 654 2938</p>
+<h1>(855) 654 2938</h1>
 
-<p><a href="tel:+18556542938"></a></p>
+<p>Click this number to call now: <a href="tel:+18556542938">+18556542938</a></p>
 
 ```
 
