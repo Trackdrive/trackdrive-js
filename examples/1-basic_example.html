@@ -1,0 +1,51 @@
+<html>
+<head>
+    <title>Basic Example</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+    <script src="../dist/trackdrive-optimizer.js"></script>
+    <script>
+        // Grab the token from ?token=somevalue
+        var offer_token = TrackdrivejQuery.urlParam('token');
+
+        var options = {
+            // Your api token from https://trackdrive.net/offers/
+            offer_token: offer_token,
+            // This default will be used if no tracking was available.
+            default_number: {
+                human_number: "(855) 879-7917",
+                plain_number: "+18558797917"
+            }
+        };
+
+        // replace all occurrences 866-338-7600, +18663387600, and [placeholder]
+        Trackdrive.Optimizer.replace_all(options, [
+            ['866-338-7600', 'dashed_number'],
+            ['+18663387600', 'plain_number'],
+            ['[placeholder]', 'human_number'],
+            ['(866) 338-7600', 'human_number']
+        ]);
+
+    </script>
+
+</head>
+<body>
+
+<p>866-338-7600 is a great telephone number.</p>
+
+<p>(866) 338-7600 is a great telephone number.</p>
+
+
+<p>+18663387600 is the best number.</p>
+
+<p>
+    <a href="tel:+18663387600">+18663387600</a>
+</p>
+
+<p>
+    <a href="tel:[placeholder]">[placeholder]</a>
+</p>
+
+
+</body>
+</html>
