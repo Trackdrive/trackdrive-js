@@ -18,8 +18,6 @@
         var $ = TrackdrivejQuery;
         var self = this;
 
-        var ga_tracker;
-
         var default_options = {
             context: $('body'),
             track_ga_client_id: false,
@@ -39,22 +37,6 @@
         var selectors = options['selectors'];
         var endpoints = options['endpoints'];
         var default_token = options['offer_token'];
-
-        // fire the ready handler once all dependencies have loaded
-        var ready_handler = $.Deferred();
-        TrackdrivejQuery(function () {
-            if (options.track_ga_client_id && typeof(window.ga) === 'function') {
-                // then delay initializing until GA has loaded
-                ga(function (tracker) {
-                    // grab a reference to the GA tracker
-                    ga_tracker = tracker;
-                    // onwards
-                    ready_handler.resolve();
-                });
-            } else {
-                ready_handler.resolve();
-            }
-        });
 
         self.replace_numbers = function () {
             if (find('number').length <= 0) {
@@ -107,10 +89,6 @@
                 $number.data('replaced', true);
             }
         };
-
-        function ready(callback) {
-            ready_handler.always(callback);
-        }
 
         function get_offer_token($number) {
             var offer_token = $number.data('offerToken');
@@ -172,8 +150,8 @@
                 optional_tokens = $.extend(optional_tokens, more_tokens);
             }
 
-            if (options.track_ga_client_id && typeof(ga_tracker) !== 'undefined' && ga_tracker !== null) {
-                optional_tokens.ga_client_id = ga_tracker.get('clientId');
+            if (typeof(options.ga_tracker) !== 'undefined') {
+                optional_tokens.ga_client_id = options.ga_tracker.get('clientId');
             }
 
             var referrer_url = Trackdrive.Base64.encode(window.location.href.toString());
@@ -224,9 +202,7 @@
                         }
                         data.number.dashed_number = Trackdrive.reformat_number(data.number.plain_number, 'dashed');
                         // pass it up the chain
-                        ready(function () {
-                            deferred_handler.resolve(data);
-                        });
+                        deferred_handler.resolve(data);
                     });
 
                     // return the callback
@@ -252,10 +228,10 @@
                 // ensure the data is valid
                 if (data !== null && typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && typeof(data.number.human_number) !== 'undefined') {
                     var deferred_handler = $.Deferred();
-                    // resolve the promise in 10ms
-                    ready(function () {
+                    // resolve the promise in 5ms
+                    setTimeout(function () {
                         deferred_handler.resolve(data);
-                    });
+                    }, 5);
                     // return the promise that exposes done
                     output = deferred_handler.promise();
                 }
@@ -278,58 +254,78 @@
 
     Optimizer.ajax_requests = {};
 
-    Optimizer.replace_all = function (options, replacements) {
-        var api = new Trackdrive.Optimizer(options);
-        var promise = api.request_number(options.offer_token);
-        promise.always(function (data) {
-
-            for (var i = 0; i < replacements.length; i++) {
-                var replacement = replacements[i];
-
-                var raw_search = replacement[0];
-                var method_name = replacement[1];
-
-                var search = Trackdrive.escapeRegExp(raw_search);
-                Trackdrive.replace_text(search, data.number[method_name]);
-                Trackdrive.replace_hrefs(search, data.number[method_name]);
+    Optimizer.ready = function (options, callback) {
+        TrackdrivejQuery(function () {
+            if (options.track_ga_client_id && typeof(window.ga) === 'function') {
+                // then delay initializing until GA has loaded
+                ga(function (tracker) {
+                    options.ga_tracker = tracker;
+                    callback();
+                });
+            } else {
+                callback();
             }
+        });
+    };
+
+    Optimizer.replace_all = function (options, replacements) {
+        Trackdrive.Optimizer.ready(options, function () {
+            var api = new Trackdrive.Optimizer(options);
+            var promise = api.request_number(options.offer_token);
+            promise.always(function (data) {
+
+                for (var i = 0; i < replacements.length; i++) {
+                    var replacement = replacements[i];
+
+                    var raw_search = replacement[0];
+                    var method_name = replacement[1];
+
+                    var search = Trackdrive.escapeRegExp(raw_search);
+                    Trackdrive.replace_text(search, data.number[method_name]);
+                    Trackdrive.replace_hrefs(search, data.number[method_name]);
+                }
+            });
         });
     };
 
     Optimizer.quick_replace = function (options, number) {
-        // Request tracking
-        var api = new Trackdrive.Optimizer(options);
-        var promise = api.request_number(options.offer_token);
-        promise.always(function (data) {
-            var plain = Trackdrive.reformat_number(number, 'plain');
+        Trackdrive.Optimizer.ready(options, function () {
+            // Request tracking
+            var api = new Trackdrive.Optimizer(options);
+            var promise = api.request_number(options.offer_token);
+            promise.always(function (data) {
+                var plain = Trackdrive.reformat_number(number, 'plain');
 
-            if (plain.length === 12) {
-                // replace each known number format
-                var formats = {
-                    plain_number: Trackdrive.reformat_number(number, 'plain'),
-                    dashed_number: Trackdrive.reformat_number(number, 'dashed'),
-                    human_number: plain
-                };
-            }
+                if (plain.length === 12) {
+                    // replace each known number format
+                    var formats = {
+                        plain_number: Trackdrive.reformat_number(number, 'plain'),
+                        dashed_number: Trackdrive.reformat_number(number, 'dashed'),
+                        human_number: plain
+                    };
+                }
 
-            for (var method_name in formats) {
-                var format = formats[method_name];
-                var search_string = Trackdrive.escapeRegExp(format);
+                for (var method_name in formats) {
+                    var format = formats[method_name];
+                    var search_string = Trackdrive.escapeRegExp(format);
 
-                Trackdrive.replace_text(search_string, data.number[method_name]);
-                Trackdrive.replace_hrefs(search_string, data.number[method_name]);
-            }
+                    Trackdrive.replace_text(search_string, data.number[method_name]);
+                    Trackdrive.replace_hrefs(search_string, data.number[method_name]);
+                }
 
-            // replace what they originally sent in
-            var search = Trackdrive.escapeRegExp(number);
-            Trackdrive.replace_text(search, data.number['human_number']);
-            Trackdrive.replace_hrefs(search, data.number['human_number']);
+                // replace what they originally sent in
+                var search = Trackdrive.escapeRegExp(number);
+                Trackdrive.replace_text(search, data.number['human_number']);
+                Trackdrive.replace_hrefs(search, data.number['human_number']);
+            });
         });
     };
 
     Optimizer.replace_numbers = function (options) {
-        var api = new Trackdrive.Optimizer(options);
-        api.replace_numbers();
+        Trackdrive.Optimizer.ready(options, function () {
+            var api = new Trackdrive.Optimizer(options);
+            api.replace_numbers();
+        });
     };
     Optimizer.version = '0.3.6';
     context.Optimizer = Optimizer;
