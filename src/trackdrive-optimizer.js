@@ -187,7 +187,8 @@
                     var request_handler = TrackdrivejQuery.ajax({
                         url: endpoints.numbers,
                         data: data,
-                        timeout: 3000
+                        timeout: 3000,
+                        xhrFields: { withCredentials: true }
                     });
 
                     var deferred_handler = $.Deferred();
