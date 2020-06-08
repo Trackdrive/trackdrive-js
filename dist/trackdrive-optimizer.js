@@ -1,6 +1,6 @@
-/*! Trackdrive Optimizer - v0.3.7 - 2018-09-19
+/*! Trackdrive Optimizer - v0.3.8 - 2020-06-08
 * https://github.com/Trackdrive/trackdrive-optimizer
-* Copyright (c) 2018 Trackdrive; Licensed  */
+* Copyright (c) 2020 Trackdrive; Licensed  */
 (typeof Crypto=="undefined"||!Crypto.util)&&function(){var m=window.Crypto={},o=m.util={rotl:function(h,g){return h<<g|h>>>32-g},rotr:function(h,g){return h<<32-g|h>>>g},endian:function(h){if(h.constructor==Number)return o.rotl(h,8)&16711935|o.rotl(h,24)&4278255360;for(var g=0;g<h.length;g++)h[g]=o.endian(h[g]);return h},randomBytes:function(h){for(var g=[];h>0;h--)g.push(Math.floor(Math.random()*256));return g},bytesToWords:function(h){for(var g=[],i=0,a=0;i<h.length;i++,a+=8)g[a>>>5]|=(h[i]&255)<<
 24-a%32;return g},wordsToBytes:function(h){for(var g=[],i=0;i<h.length*32;i+=8)g.push(h[i>>>5]>>>24-i%32&255);return g},bytesToHex:function(h){for(var g=[],i=0;i<h.length;i++)g.push((h[i]>>>4).toString(16)),g.push((h[i]&15).toString(16));return g.join("")},hexToBytes:function(h){for(var g=[],i=0;i<h.length;i+=2)g.push(parseInt(h.substr(i,2),16));return g},bytesToBase64:function(h){if(typeof btoa=="function")return btoa(n.bytesToString(h));for(var g=[],i=0;i<h.length;i+=3)for(var a=h[i]<<16|h[i+1]<<
 8|h[i+2],b=0;b<4;b++)i*8+b*6<=h.length*8?g.push("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(a>>>6*(3-b)&63)):g.push("=");return g.join("")},base64ToBytes:function(h){if(typeof atob=="function")return n.stringToBytes(atob(h));for(var h=h.replace(/[^A-Z0-9+\/]/ig,""),g=[],i=0,a=0;i<h.length;a=++i%4)a!=0&&g.push(("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".indexOf(h.charAt(i-1))&Math.pow(2,-2*a+8)-1)<<a*2|"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".indexOf(h.charAt(i))>>>
@@ -10745,7 +10745,13 @@ if (typeof(window.Trackdrive) === 'undefined') {
                 }
                 output = d[0] + d[1] + d[2] + '-' + d[3] + d[4] + d[5] + '-' + d[6] + d[7] + d[8] + d[9];
 
-            } else if (format === 'human') {
+            } else if (format === 'dotted') {
+                if (d[0] === '1') {
+                    d.shift();
+                }
+                output = d[0] + d[1] + d[2] + '.' + d[3] + d[4] + d[5] + '.' + d[6] + d[7] + d[8] + d[9];
+
+            }  else if (format === 'human') {
                 if (d[0] === '1') {
                     d.shift();
                 }
@@ -11023,6 +11029,7 @@ if (typeof(window.Trackdrive) === 'undefined') {
                             }
                         }
                         data.number.dashed_number = Trackdrive.reformat_number(data.number.plain_number, 'dashed');
+                        data.number.dotted_number = Trackdrive.reformat_number(data.number.plain_number, 'dotted');
                         // pass it up the chain
                         deferred_handler.resolve(data);
                     });
@@ -11123,6 +11130,7 @@ if (typeof(window.Trackdrive) === 'undefined') {
                     var formats = {
                         plain_number: Trackdrive.reformat_number(number, 'plain'),
                         dashed_number: Trackdrive.reformat_number(number, 'dashed'),
+                        dotted_number: Trackdrive.reformat_number(number, 'dotted'),
                         human_number: plain
                     };
                 }

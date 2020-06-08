@@ -202,6 +202,7 @@
                             }
                         }
                         data.number.dashed_number = Trackdrive.reformat_number(data.number.plain_number, 'dashed');
+                        data.number.dotted_number = Trackdrive.reformat_number(data.number.plain_number, 'dotted');
                         // pass it up the chain
                         deferred_handler.resolve(data);
                     });
@@ -302,6 +303,7 @@
                     var formats = {
                         plain_number: Trackdrive.reformat_number(number, 'plain'),
                         dashed_number: Trackdrive.reformat_number(number, 'dashed'),
+                        dotted_number: Trackdrive.reformat_number(number, 'dotted'),
                         human_number: plain
                     };
                 }
