@@ -19,17 +19,13 @@
         var self = this;
 
         var default_options = {
-            context: $('body'),
-            track_ga_client_id: false,
-            cookies: false, // whether to store numbers in cookies
+            context: $('body'), track_ga_client_id: false, cookies: false, // whether to store numbers in cookies
             cookies_expires: 1 / 240, // numbers stored in cookies expire after 6 minutes
             selectors: {
                 number: '.trackdrive-number'
-            },
-            endpoints: {
+            }, endpoints: {
                 numbers: 'https://api.trackdrive.net/api/v1/numbers.json'
-            },
-            tokens: {}
+            }, tokens: {}
         };
 
         options = TrackdrivejQuery.extend(default_options, options);
@@ -77,7 +73,7 @@
                 promise.always(function (data) {
                     draw_number($number, data);
 
-                    if (typeof(options.done) === 'function') {
+                    if (typeof (options.done) === 'function') {
                         options.done($number, data);
                     }
                 });
@@ -93,10 +89,10 @@
         function get_offer_token($number) {
             var offer_token = $number.data('offerToken');
             // fallback to default token if this number does not have a token defined
-            if (offer_token === null || typeof(offer_token) === 'undefined') {
+            if (offer_token === null || typeof (offer_token) === 'undefined') {
                 offer_token = default_token;
             }
-            if (offer_token === null || typeof(offer_token) === 'undefined') {
+            if (offer_token === null || typeof (offer_token) === 'undefined') {
                 offer_token = false;
             }
             return offer_token;
@@ -107,17 +103,17 @@
             var text = $number.data('text');
             var format = $number.data('format'); // Format: human, plain
             // default format is human
-            if (typeof(format) === 'undefined') {
+            if (typeof (format) === 'undefined') {
                 format = 'human';
             }
 
             // use server response if present
-            if (typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && typeof(data.number.human_number) !== 'undefined') {
+            if (typeof (data) !== 'undefined' && typeof (data.number) !== 'undefined' && typeof (data.number.human_number) !== 'undefined') {
                 var number = data.number;
                 // update the DOM with the number
                 var html = '';
                 // output custom text if given
-                if (text !== null && typeof(text) !== 'undefined' && text.length > 0) {
+                if (text !== null && typeof (text) !== 'undefined' && text.length > 0) {
                     html = text;
                     // replace [number] with 800 123 1234
                     for (var key in number) {
@@ -146,11 +142,11 @@
 
             var optional_tokens = $.extend({}, options.tokens);
 
-            if (typeof(more_tokens) !== 'undefined') {
+            if (typeof (more_tokens) !== 'undefined') {
                 optional_tokens = $.extend(optional_tokens, more_tokens);
             }
 
-            if (typeof(options.ga_tracker) !== 'undefined') {
+            if (typeof (options.ga_tracker) !== 'undefined') {
                 optional_tokens.ga_client_id = options.ga_tracker.get('clientId');
             }
 
@@ -163,15 +159,15 @@
                 output = get_local_trackdrive_number(unique_key);
             }
             // fallback to making a server request
-            if (typeof(output) === 'undefined' || output === false) {
-                if (typeof(Optimizer.ajax_requests[unique_key]) === 'undefined') {
+            if (typeof (output) === 'undefined' || output === false) {
+                if (typeof (Optimizer.ajax_requests[unique_key]) === 'undefined') {
 
                     var default_number;
 
-                    if (typeof(options.default_number) !== 'undefined') {
-                        if (typeof(options.default_number.plain_number) !== 'undefined') {
+                    if (typeof (options.default_number) !== 'undefined') {
+                        if (typeof (options.default_number.plain_number) !== 'undefined') {
                             default_number = options.default_number.plain_number;
-                        } else if (typeof(options.default_number.human_number) !== 'undefined') {
+                        } else if (typeof (options.default_number.human_number) !== 'undefined') {
                             default_number = options.default_number.human_number;
                         }
                     }
@@ -184,25 +180,44 @@
                         default_number: default_number
                     };
 
+                    // send per visitor data when stored
+                    var raw_tdvisitor = localStorage.getItem("tdvisitor-" + options.offer_token);
+                    if (typeof (raw_tdvisitor) !== 'undefined' && raw_tdvisitor !== null) {
+                        var tdvisitor = $.parseJSON(raw_tdvisitor);
+                        var current_timestamp = new Date().getTime();
+                        // recent?
+                        if (typeof (tdvisitor.timestamp) !== 'undefined' && tdvisitor.timestamp !== null) {
+                            if ((current_timestamp - tdvisitor.timestamp) < 86400) {
+                                data = $.extend(data, tdvisitor);
+                            }
+                        }
+                    }
+
                     var request_handler = TrackdrivejQuery.ajax({
-                        url: endpoints.numbers,
-                        data: data,
-                        timeout: 3000,
-                        xhrFields: { withCredentials: true }
+                        url: endpoints.numbers, data: data, timeout: 3000, xhrFields: {withCredentials: true}
                     });
 
                     var deferred_handler = $.Deferred();
 
                     request_handler.always(function (data) {
                         // invalid response?
-                        if (typeof(data) === 'undefined' || typeof(data.number) === 'undefined' || typeof(data.number.human_number) === 'undefined') {
+                        if (typeof (data) === 'undefined' || typeof (data.number) === 'undefined' || typeof (data.number.human_number) === 'undefined') {
                             // inject the default if present and missing in server response
-                            if (typeof(options.default_number) !== 'undefined') {
+                            if (typeof (options.default_number) !== 'undefined') {
                                 data = {number: options.default_number};
                             }
                         }
                         data.number.dashed_number = Trackdrive.reformat_number(data.number.plain_number, 'dashed');
                         data.number.dotted_number = Trackdrive.reformat_number(data.number.plain_number, 'dotted');
+                        // store per visitor data when given
+                        if (typeof (data) !== 'undefined' && typeof (data.number) !== 'undefined' && data.number !== null) {
+                            if (typeof (data.number.visitor_value) !== 'undefined' && data.number.visitor_value !== null) {
+                                var new_tdvisitor = {};
+                                new_tdvisitor[data.number.visitor_key] = data.number.visitor_value;
+                                new_tdvisitor.timestamp = new Date().getTime();
+                                localStorage.setItem("tdvisitor-" + options.offer_token, $.toJSON(new_tdvisitor));
+                            }
+                        }
                         // pass it up the chain
                         deferred_handler.resolve(data);
                     });
@@ -225,10 +240,10 @@
             var unique_key_md5 = Crypto.MD5(unique_key);
             var raw_data = Cookies.get(unique_key_md5);
             var output = false;
-            if (typeof(raw_data) !== 'undefined') {
+            if (typeof (raw_data) !== 'undefined') {
                 var data = $.parseJSON(raw_data);
                 // ensure the data is valid
-                if (data !== null && typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && typeof(data.number.human_number) !== 'undefined') {
+                if (data !== null && typeof (data) !== 'undefined' && typeof (data.number) !== 'undefined' && typeof (data.number.human_number) !== 'undefined') {
                     var deferred_handler = $.Deferred();
                     // resolve the promise in 5ms
                     setTimeout(function () {
@@ -258,7 +273,7 @@
 
     Optimizer.ready = function (options, callback) {
         TrackdrivejQuery(function () {
-            if (options.track_ga_client_id && typeof(window.ga) === 'function') {
+            if (options.track_ga_client_id && typeof (window.ga) === 'function') {
                 // then delay initializing until GA has loaded
                 ga(function (tracker) {
                     options.ga_tracker = tracker;
